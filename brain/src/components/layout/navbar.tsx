@@ -2,14 +2,24 @@ import React from "react";
 import { BrowserRouter, Link } from "react-router-dom";
 import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
+import "./Navbar.css";
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="nav-wrapper grey darken-3">
+    <nav className="nav-wrapper black lighten-1">
       <div className="container">
         <BrowserRouter>
           <Link to="/" className="brandLogo">
-            Brain
+            <img
+              src={process.env.PUBLIC_URL + "/img/watson.gif"}
+              alt="Logo"
+              id="brainLogo"
+            />
+          </Link>
+          <Link to="/">
+            <span className="brand-logo" id="brainTitle">
+              BRAIN
+            </span>
           </Link>
           <SignedInLinks />
           <SignedOutLinks />
