@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Link } from "react-router-dom";
-import SignedInLinks from "./signedInLinks";
-import SignedOutLinks from "./signedOutLinks";
+import SignedInLinks from "./SignedInLinks";
+import SignedOutLinks from "./SignedOutLinks";
 
 const Navbar: React.FC = () => {
   return (
