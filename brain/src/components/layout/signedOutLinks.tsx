@@ -1,16 +1,12 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import Nav from "react-bootstrap/Nav";
 
 const SignedOutLinks: React.FC = () => {
   return (
-    <ul className="right">
-      <li>
-        <NavLink to="/">Sign In</NavLink>
-      </li>
-      <li>
-        <NavLink to="/">Sign Up</NavLink>
-      </li>
-    </ul>
+    <Nav>
+      <Nav.Link href="#home">Sign In</Nav.Link>
+      <Nav.Link href="#features">Sign Up</Nav.Link>
+    </Nav>
   );
 };
 
