@@ -1,32 +1,31 @@
 import React from "react";
-import { BrowserRouter, Link } from "react-router-dom";
+import Navbar from "react-bootstrap/Navbar";
+import Col from "react-bootstrap/Col";
 import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
+import SearchBar from "./SearchBar";
 import "./Navbar.css";
 
-const Navbar: React.FC = () => {
+const BrainNav: React.FC = () => {
   return (
-    <nav className="nav-wrapper black lighten-1">
-      <div className="container">
-        <BrowserRouter>
-          <Link to="/" className="brandLogo">
-            <img
-              src={process.env.PUBLIC_URL + "/img/watson.gif"}
-              alt="Logo"
-              id="brainLogo"
-            />
-          </Link>
-          <Link to="/">
-            <span className="brand-logo" id="brainTitle">
-              BRAIN
-            </span>
-          </Link>
-          <SignedInLinks />
-          <SignedOutLinks />
-        </BrowserRouter>
-      </div>
-    </nav>
+    <Navbar id="brainNav" variant="dark">
+      <Col xs={2}>
+        <Navbar.Brand href="/">
+          <img
+            src={process.env.PUBLIC_URL + "/img/watson.gif"}
+            alt="Logo"
+            id="brainLogo"
+          />
+          BRAIN
+        </Navbar.Brand>
+      </Col>
+      <Col xs={2}>
+        <SearchBar />
+      </Col>
+      <SignedInLinks />
+      <SignedOutLinks />
+    </Navbar>
   );
 };
 
-export default Navbar;
+export default BrainNav;

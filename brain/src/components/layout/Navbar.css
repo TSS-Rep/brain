@@ -1,10 +1,14 @@
 #brainLogo {
   height: 50px;
-  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 #brainTitle {
   width: 100px;
   height: 15px;
   padding-bottom: 10px;
+}
+
+#brainNav {
+  background-color: black;
 }
