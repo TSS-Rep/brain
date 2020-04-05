@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import BrainNav from "./components/layout/Navbar";
+import BrainNav from "./components/layout/BrainNav";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";

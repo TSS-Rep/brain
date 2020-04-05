@@ -7,7 +7,7 @@ import "./SearchBar.css";
 
 const SearchBar: React.FC = () => {
   return (
-    <InputGroup>
+    <InputGroup id="SearchBar">
       <FormControl
         type="text"
         placeholder="Search"

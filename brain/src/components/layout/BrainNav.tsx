@@ -19,9 +19,7 @@ const BrainNav: React.FC = () => {
           BRAIN
         </Navbar.Brand>
       </Col>
-      <Col xs={2}>
-        <SearchBar />
-      </Col>
+      <SearchBar />
       <SignedInLinks />
       <SignedOutLinks />
     </Navbar>
