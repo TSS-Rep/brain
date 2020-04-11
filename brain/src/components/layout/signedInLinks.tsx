@@ -6,6 +6,7 @@ const SignedInLinks: React.FC = () => {
     <Nav className="mr-auto">
       <Nav.Link href="#home">Predictive</Nav.Link>
       <Nav.Link href="#features">Analytics</Nav.Link>
+      <Nav.Link href="#features">Scheduler</Nav.Link>
     </Nav>
   );
 };
