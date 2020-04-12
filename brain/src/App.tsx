@@ -15,7 +15,7 @@ class App extends Component {
           <Switch>
             <Route path="/signin" component={SignIn} />
             <Route path="/signup" component={SignUp} />
-            <Route path="/shceduler" component={Scheduler} />
+            <Route path="/scheduler" component={Scheduler} />
           </Switch>
           <BrainFooter />
         </div>
