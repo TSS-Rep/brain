@@ -10,6 +10,7 @@ class BrainMap extends Component {
     zoom: 12,
   };
   render() {
+    console.log(process.env.REACT_APP_MAPS_API_KEY);
     return (
       // Important! Always set the container height explicitly
       <div
@@ -17,7 +18,7 @@ class BrainMap extends Component {
         style={{ height: "80vh", width: "100%" }}
       >
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyAtM1Vf4iDDY_ALVp-xlpXu7HJ6xxCXjVQ" }}
+          bootstrapURLKeys={{ key: process.env.REACT_APP_MAPS_API_KEY }}
           defaultCenter={this.initialPosition.center}
           defaultZoom={this.initialPosition.zoom}
         ></GoogleMapReact>
