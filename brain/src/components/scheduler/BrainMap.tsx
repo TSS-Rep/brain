@@ -7,12 +7,18 @@ import MapCard from "../commons/MapCard";
 interface MapProps {
   tickets: {
     _id: string;
-    service: string;
-    engineer: number;
-    coor: {
-      lat: number;
-      lng: number;
+    atm: {
+      _id: string;
+      brand: string;
+      model: string;
+      service: string;
+      coor: {
+        lat: number;
+        lng: number;
+      };
     };
+    start_date: string;
+    engineer: number;
   }[];
   engineers: {
     name: string;
@@ -43,7 +49,7 @@ class BrainMap extends Component<MapProps> {
           defaultZoom={this.initialPosition.zoom}
         >
           {this.props.tickets.map((ticket) => (
-            <MapCard {...ticket.coor} service={ticket.service} />
+            <MapCard {...ticket.atm.coor} service={ticket.atm.service} />
           ))}
           {this.props.engineers.map((engineer) => (
             <MapCard {...engineer.coor} service={null} />
