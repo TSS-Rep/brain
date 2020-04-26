@@ -6,9 +6,9 @@ import Card from "react-bootstrap/Card";
 
 import BrainMap from "./BrainMap";
 import TicketSchedulerTable from "./TicketSchedulerTable";
+import "./Scheduler.css";
 
 class Scheduler extends Component {
-  state = { width: 200, height: 200 };
   tickets = [
     {
       _id: "P267349",
@@ -41,37 +41,6 @@ class Scheduler extends Component {
       start_date: "25/04/2020 11:42",
       engineer: 1730276,
     },
-    {
-      _id: "P267349",
-      atm: {
-        _id: "X99314",
-        service: "SUC",
-        brand: "DIEBOLD",
-        model: "NEXTGEN 3700",
-        coor: {
-          lat: 19.5682414,
-          lng: -99.0436029,
-        },
-      },
-      start_date: "25/04/2020 11:42",
-      engineer: 1730276,
-    },
-
-    {
-      _id: "P265372",
-      atm: {
-        _id: "X99314",
-        service: "SUC",
-        brand: "DIEBOLD",
-        model: "NEXTGEN 3700",
-        coor: {
-          lat: 19.5692414,
-          lng: -99.0436029,
-        },
-      },
-      start_date: "25/04/2020 11:42",
-      engineer: 1376310,
-    },
   ];
   engineers = [
     {
@@ -97,8 +66,8 @@ class Scheduler extends Component {
     return (
       <div id="scheduler">
         <Row>
-          <Col>
-            <Card>
+          <Col className="column">
+            <Card className="ml-2 mt-2">
               <Card.Header>Tickets Asignados</Card.Header>
               <Card.Body>
                 <TicketSchedulerTable
@@ -109,7 +78,7 @@ class Scheduler extends Component {
               </Card.Body>
             </Card>
 
-            <Card>
+            <Card className="ml-2 mt-3">
               <Card.Header>Tickets No Asignados</Card.Header>
               <Card.Body>
                 <TicketSchedulerTable

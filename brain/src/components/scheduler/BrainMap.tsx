@@ -41,7 +41,7 @@ class BrainMap extends Component<MapProps> {
       // Important! Always set the container height explicitly
       <div
         className="justify-content-md-left"
-        style={{ height: "80vh", width: "100%" }}
+        style={{ height: "100%", width: "100%" }}
       >
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_MAPS_API_KEY }}
