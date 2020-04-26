@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.resize {
+  overflow: auto;
+}
+.resize.horizontal {
+  resize: horizontal;
+}
+.resize.vertical {
+  resize: vertical;
+}
+.resize.both {
+  resize: both;
+}

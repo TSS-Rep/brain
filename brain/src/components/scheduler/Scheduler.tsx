@@ -3,31 +3,43 @@ import React, { Component } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
-import Table from "react-bootstrap/Table";
 
 import BrainMap from "./BrainMap";
+import TicketSchedulerTable from "./TicketSchedulerTable";
+import "./Scheduler.css";
 
 class Scheduler extends Component {
-  state = { width: 200, height: 200 };
   tickets = [
     {
       _id: "P267349",
-      service: "SUC",
-      engineer: 1730276,
-      coor: {
-        lat: 19.5682414,
-        lng: -99.0436029,
+      atm: {
+        _id: "X99314",
+        service: "SUC",
+        brand: "DIEBOLD",
+        model: "NEXTGEN 3700",
+        coor: {
+          lat: 19.5682414,
+          lng: -99.0436029,
+        },
       },
+      start_date: "25/04/2020 11:42",
+      engineer: 1730276,
     },
 
     {
-      _id: "P563F01",
-      service: "SUC",
-      engineer: 1376310,
-      coor: {
-        lat: 19.4326071,
-        lng: -99.15921299999999,
+      _id: "P265372",
+      atm: {
+        _id: "X99314",
+        service: "SUC",
+        brand: "DIEBOLD",
+        model: "NEXTGEN 3700",
+        coor: {
+          lat: 19.5692414,
+          lng: -99.0436029,
+        },
       },
+      start_date: "25/04/2020 11:42",
+      engineer: 1730276,
     },
   ];
   engineers = [
@@ -54,45 +66,32 @@ class Scheduler extends Component {
     return (
       <div id="scheduler">
         <Row>
-          <Col>
-            <Card>
+          <Col className="ml-4">
+            <Card className=" mt-2">
               <Card.Header>Tickets Asignados</Card.Header>
               <Card.Body>
-                <Card.Text>
-                  <Table striped bordered hover size="sm">
-                    <thead>
-                      <tr>
-                        <th>Ticket</th>
-                        <th>Ingeniero Asignado</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.tickets.map((ticket) => (
-                        <tr key={ticket._id}>
-                          <td>{ticket._id}</td>
-                          <td>
-                            {
-                              this.engineers.filter(
-                                (engineer) => engineer._id === ticket.engineer
-                              )[0].name
-                            }
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </Card.Text>
+                <TicketSchedulerTable
+                  tickets={this.tickets}
+                  engineers={this.engineers}
+                  actions={["info", "change", "cancel", "displayOnMap"]}
+                />
               </Card.Body>
             </Card>
 
-            <Card>
+            <Card className=" mt-2">
               <Card.Header>Tickets No Asignados</Card.Header>
               <Card.Body>
-                <Card.Title>Special title treatment</Card.Title>
-                <Card.Text>
-                  With supporting text below as a natural lead-in to additional
-                  content.
-                </Card.Text>
+                <TicketSchedulerTable
+                  tickets={this.tickets}
+                  engineers={this.engineers}
+                  actions={[
+                    "assign",
+                    "change",
+                    "info",
+                    "cancel",
+                    "displayOnMap",
+                  ]}
+                />
               </Card.Body>
             </Card>
           </Col>

@@ -8,7 +8,7 @@ import "./SearchBar.css";
 
 const SearchBar: React.FC = () => {
   return (
-    <Row>
+    <Row className="pl-5">
       <Col id="SearchBar">
         <FormControl
           type="text"
@@ -16,7 +16,7 @@ const SearchBar: React.FC = () => {
           className="mr-sm-2 text-white"
         />
       </Col>
-      <Col>
+      <Col className="pl-0">
         <Button variant="outline-info">
           <FaSearch />
         </Button>
