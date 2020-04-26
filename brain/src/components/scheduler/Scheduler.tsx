@@ -66,7 +66,7 @@ class Scheduler extends Component {
     return (
       <div id="scheduler">
         <Row>
-          <Col className="column">
+          <Col className=>
             <Card className="ml-2 mt-2">
               <Card.Header>Tickets Asignados</Card.Header>
               <Card.Body>
@@ -78,7 +78,7 @@ class Scheduler extends Component {
               </Card.Body>
             </Card>
 
-            <Card className="ml-2 mt-3">
+            <Card className="ml-2 mt-2">
               <Card.Header>Tickets No Asignados</Card.Header>
               <Card.Body>
                 <TicketSchedulerTable

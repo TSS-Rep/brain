@@ -1,6 +1,5 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
-import Col from "react-bootstrap/Col";
 import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
 import SearchBar from "./SearchBar";
@@ -19,7 +18,6 @@ const BrainNav: React.FC = () => {
         BRAIN
       </Navbar.Brand>
       <Navbar.Collapse id="responsive-navbar-nav">
-        <Col xs={2}></Col>
         <SearchBar />
         <SignedInLinks />
         <SignedOutLinks />
