@@ -4,7 +4,7 @@ import Table from "react-bootstrap/Table";
 import Badge from "react-bootstrap/Badge";
 import { IconContext } from "react-icons";
 import { FaCheckCircle, FaEye, FaExchangeAlt } from "react-icons/fa";
-import { MdCancel, MdLocationOn } from "react-icons/md";
+import { MdCancel, MdLocationOn, MdLocationOff } from "react-icons/md";
 
 interface TicketSchedulerTableProps {
   tickets: {
@@ -39,47 +39,77 @@ type action = {
 };
 
 class TicketSchedulerTable extends Component<TicketSchedulerTableProps> {
+  // Delete from the DB
+  private handleTicketAssign = async (e: any) => {
+    console.log(e);
+  };
+  // Delete from the DB
+  private handleTicketCancelation = async (e: any) => {
+    console.log(e);
+  };
+  // Delete from the DB
+  private handleEnginnerChange = async (e: any) => {
+    console.log(e);
+  };
+  // Delete from the DB
+  private handleShowInfo = async (e: any) => {
+    console.log(e);
+  };
+  // Delete from the DB
+  private handleDisplayOnMap = async (e: any) => {
+    console.log(e);
+  };
+  ACTION_LENGTH_OF_UNASSIGNED = 4;
   COLUMNS = {
     _id: "ID",
     start_date: "Fecha de Inicio",
     atm: "ATM",
-    suggestion: "Asignación Sugerida",
+    suggestion:
+      this.props.actions.length > this.ACTION_LENGTH_OF_UNASSIGNED
+        ? "Asignación Sugerida"
+        : "Ingeniero Asignado",
     actions: "ACTIONS",
   };
   ACTIONS: action = {
     assign: {
       color: "green",
       icon: <FaCheckCircle />,
-      handler: "",
+      handler: this.handleTicketAssign,
     },
     change: {
       color: "orange",
       icon: <FaExchangeAlt />,
-      handler: "",
+      handler: this.handleEnginnerChange,
     },
     cancel: {
       color: "red",
       icon: <MdCancel />,
-      handler: "",
+      handler: this.handleTicketCancelation,
     },
     info: {
       color: "blue",
       icon: <FaEye />,
-      handler: "",
+      handler: this.handleShowInfo,
     },
     displayOnMap: {
       color: "green",
       icon: <MdLocationOn />,
-      handler: "",
+      handler: this.handleDisplayOnMap,
+    },
+    noDisplayOnMap: {
+      color: "green",
+      icon: <MdLocationOff />,
+      handler: this.handleDisplayOnMap,
     },
   };
+
   render() {
     return (
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
             {Object.values(this.COLUMNS).map((columName) => (
-              <th>{columName}</th>
+              <th key={columName}>{columName}</th>
             ))}
           </tr>
         </thead>
@@ -105,9 +135,17 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps> {
               <td>
                 {this.props.actions.map((action) => (
                   <IconContext.Provider
-                    value={{ color: this.ACTIONS[action].color }}
+                    key={action}
+                    value={{
+                      color: this.ACTIONS[action].color,
+                    }}
                   >
-                    <span className="p-1">{this.ACTIONS[action].icon}</span>
+                    <span
+                      onClick={this.ACTIONS[action].handler.bind(this)}
+                      className="active p-1"
+                    >
+                      {this.ACTIONS[action].icon}
+                    </span>
                   </IconContext.Provider>
                 ))}
               </td>
