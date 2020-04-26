@@ -7,12 +7,18 @@ import MapCard from "../commons/MapCard";
 interface MapProps {
   tickets: {
     _id: string;
-    service: string;
-    engineer: number;
-    coor: {
-      lat: number;
-      lng: number;
+    atm: {
+      _id: string;
+      brand: string;
+      model: string;
+      service: string;
+      coor: {
+        lat: number;
+        lng: number;
+      };
     };
+    start_date: string;
+    engineer: number;
   }[];
   engineers: {
     name: string;
@@ -30,12 +36,11 @@ class BrainMap extends Component<MapProps> {
     zoom: 12,
   };
   render() {
-    console.log(this.props);
     return (
       // Important! Always set the container height explicitly
       <div
         className="justify-content-md-left"
-        style={{ height: "80vh", width: "100%" }}
+        style={{ height: "100%", width: "100%" }}
       >
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_MAPS_API_KEY }}
@@ -43,10 +48,14 @@ class BrainMap extends Component<MapProps> {
           defaultZoom={this.initialPosition.zoom}
         >
           {this.props.tickets.map((ticket) => (
-            <MapCard {...ticket.coor} service={ticket.service} />
+            <MapCard
+              {...ticket.atm.coor}
+              service={ticket.atm.service}
+              key={ticket._id}
+            />
           ))}
           {this.props.engineers.map((engineer) => (
-            <MapCard {...engineer.coor} service={null} />
+            <MapCard {...engineer.coor} service={null} key={engineer._id} />
           ))}
         </GoogleMapReact>
       </div>

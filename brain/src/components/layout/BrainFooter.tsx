@@ -4,7 +4,7 @@ import "./Navbar.css";
 
 const BrainFooter: React.FC = () => {
   return (
-    <Navbar id="brainNav" variant="dark" className="fixed-bottom">
+    <Navbar id="brainNavFooter" variant="dark" className="fixed-bottom">
       <span className="text-center text-light">
         Eduardo Santos - TSS - Copyright 2020
       </span>
