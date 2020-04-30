@@ -34,8 +34,8 @@ class Scheduler extends Component {
         brand: "DIEBOLD",
         model: "NEXTGEN 3700",
         coor: {
-          lat: 19.5692414,
-          lng: -99.0436029,
+          lat: 19.5492414,
+          lng: -99.0535029,
         },
       },
       start_date: "25/04/2020 11:42",
