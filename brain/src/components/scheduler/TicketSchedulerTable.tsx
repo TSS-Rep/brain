@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Table from "react-bootstrap/Table";
 import Badge from "react-bootstrap/Badge";
 import { IconContext } from "react-icons";
-import { FaCheckCircle, FaEye, FaExchangeAlt } from "react-icons/fa";
+import { FaCheckCircle, FaExchangeAlt } from "react-icons/fa";
 import { MdCancel, MdLocationOn, MdLocationOff } from "react-icons/md";
 
 interface TicketSchedulerTableProps {
@@ -28,6 +28,7 @@ interface TicketSchedulerTableProps {
     coor: { lat: number; lng: number };
   }[];
   actions: string[];
+  handleShowMore?: any
 }
 
 type action = {
@@ -49,10 +50,7 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps> {
   };
   // Delete from the DB
   private handleEnginnerChange = async (e: any) => {
-    console.log(e);
-  };
-  // Delete from the DB
-  private handleShowInfo = async (e: any) => {
+    this.displayExtraInfoHandler(e);
     console.log(e);
   };
   // Delete from the DB
@@ -86,11 +84,6 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps> {
       icon: <MdCancel />,
       handler: this.handleTicketCancelation,
     },
-    info: {
-      color: "blue",
-      icon: <FaEye />,
-      handler: this.handleShowInfo,
-    },
     displayOnMap: {
       color: "green",
       icon: <MdLocationOn />,
@@ -103,6 +96,71 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps> {
     },
   };
 
+  displayExtraInfoHandler = (e: any) => {
+    /**
+     *  Click come from an specific cell in the table, so we need to find
+     * the closest row which is its direct ancestor and from this row
+     * get the next row which is the display area.
+     */
+    const hiddenElement = e.currentTarget.closest('tr').nextSibling;
+    hiddenElement.className.indexOf("collapse show") > -1 ? hiddenElement.classList.remove("show") : hiddenElement.classList.add("show");
+  };
+
+  createTable = () => {
+    let table = []
+
+    for (let index = 0; index < this.props.tickets.length * 2; index++) {
+      let children = []
+      
+      if (index % 2 === 0) {
+        let ticket = this.props.tickets[index  / 2];
+        children.push(<td key={"id" + index}>{ticket._id}</td>)
+        children.push(<td key={"startDate" + index}>{ticket.start_date}</td>)
+        children.push(<td key={"atm" + index}> <div onClick={this.displayExtraInfoHandler}> {ticket.atm._id}</div></td>)
+        children.push(
+          <td key={"eng" + index}>
+            <span className="p-1" onClick={this.displayExtraInfoHandler}>
+              {
+                this.props.engineers.filter(
+                  (engineer) => engineer._id === ticket.engineer
+                )[0].name
+              }
+            </span>
+            <span>
+              {<Badge variant={true ? "success" : "danger"}>0.8</Badge>}
+            </span>
+          </td>
+        );
+        children.push(<td key={"actions" + index}>
+            {this.props.actions.map((action) => (
+              <IconContext.Provider
+                key={action + index}
+                value={{
+                  color: this.ACTIONS[action].color,
+                }}
+              >
+                <span
+                  onClick={this.ACTIONS[action].handler.bind(this)}
+                  className="active p-1"
+                >
+                  {this.ACTIONS[action].icon}
+                </span>
+              </IconContext.Provider>
+            ))}
+          </td>
+        )
+        table.push(<tr key={ticket._id}>{children}</tr>)
+      }
+      else {
+        children.push(<td key={"extraInfo" + index} colSpan={Object.keys(this.COLUMNS).length}>HOLA</td>)
+        table.push(<tr className="collapse" key={"extraData" + index}>{children}</tr>)
+      }
+      
+    }
+
+    return table
+  }
+
   render() {
     return (
       <Table striped bordered hover size="sm">
@@ -114,43 +172,9 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps> {
           </tr>
         </thead>
         <tbody>
-          {this.props.tickets.map((ticket) => (
-            <tr key={ticket._id}>
-              <td>{ticket._id}</td>
-              <td>{ticket.start_date}</td>
-              <td>{ticket.atm._id}</td>
-              {/* This is harcoded now, this should call a function that get the prediction */}
-              <td>
-                <span className="p-1">
-                  {
-                    this.props.engineers.filter(
-                      (engineer) => engineer._id === ticket.engineer
-                    )[0].name
-                  }
-                </span>
-                <span>
-                  {<Badge variant={true ? "success" : "danger"}>0.8</Badge>}
-                </span>
-              </td>
-              <td>
-                {this.props.actions.map((action) => (
-                  <IconContext.Provider
-                    key={action}
-                    value={{
-                      color: this.ACTIONS[action].color,
-                    }}
-                  >
-                    <span
-                      onClick={this.ACTIONS[action].handler.bind(this)}
-                      className="active p-1"
-                    >
-                      {this.ACTIONS[action].icon}
-                    </span>
-                  </IconContext.Provider>
-                ))}
-              </td>
-            </tr>
-          ))}
+          {
+            this.createTable()
+          }
         </tbody>
       </Table>
     );

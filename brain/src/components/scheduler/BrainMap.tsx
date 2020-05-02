@@ -4,6 +4,8 @@ import GoogleMapReact from "google-map-react";
 
 import MapCard from "../commons/MapCard";
 
+import "./Scheduler.css";
+
 interface MapProps {
   tickets: {
     _id: string;
@@ -38,10 +40,7 @@ class BrainMap extends Component<MapProps> {
   render() {
     return (
       // Important! Always set the container height explicitly
-      <div
-        className="justify-content-md-left"
-        style={{ height: "100%", width: "100%" }}
-      >
+      <div className="schedulerMap  justify-content-md-left">
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_MAPS_API_KEY }}
           defaultCenter={this.initialPosition.center}
