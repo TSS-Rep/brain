@@ -6,6 +6,8 @@ import { IconContext } from "react-icons";
 import { FaCheckCircle, FaExchangeAlt } from "react-icons/fa";
 import { MdCancel, MdLocationOn, MdLocationOff } from "react-icons/md";
 
+import ExtraInfoRow from "./ExtraInfoRow";
+
 interface TicketSchedulerTableProps {
   tickets: {
     _id: string;
@@ -31,6 +33,18 @@ interface TicketSchedulerTableProps {
   handleShowMore?: any
 }
 
+interface TicketSchedulerTableState {
+  // Used to store tthe state of each row of extra info.
+  showExtraInfo: [
+    {
+      show: boolean;
+      showExtraInfoATM: boolean;
+      showExtraInfoEngineer: boolean;
+      showChangeEngineer: boolean;
+    }
+  ]
+}
+
 type action = {
   [assign: string]: {
     color: string;
@@ -39,7 +53,41 @@ type action = {
   };
 };
 
-class TicketSchedulerTable extends Component<TicketSchedulerTableProps> {
+type showRowsState = [{
+    show: boolean;
+    showExtraInfoATM: boolean;
+    showExtraInfoEngineer: boolean;
+    showChangeEngineer: boolean;
+  }]
+
+class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSchedulerTableState> {
+
+  // Declare state property and annotate it with TicketSchedulerTableState
+  state: TicketSchedulerTableState
+  constructor(props: TicketSchedulerTableProps) {
+    super(props)
+
+    let showExtraInfo: showRowsState = [
+      {
+        show: false,
+        showExtraInfoATM: false,
+        showExtraInfoEngineer: false,
+        showChangeEngineer: false,
+      },
+    ];
+    for(let i = 0; i < this.props.tickets.length - 1; i++){
+      showExtraInfo.push({
+        show: false,
+        showExtraInfoATM: false,
+        showExtraInfoEngineer: false,
+        showChangeEngineer: false,
+      });
+    }
+    console.log(showExtraInfo.length);
+    this.state = {showExtraInfo};
+
+  }
+  
   // Delete from the DB
   private handleTicketAssign = async (e: any) => {
     console.log(e);
@@ -50,7 +98,7 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps> {
   };
   // Delete from the DB
   private handleEnginnerChange = async (e: any) => {
-    this.displayExtraInfoHandler(e);
+    this.displayExtraInfoHandler(this.INVOKERS['CHANGE'], 0);
     console.log(e);
   };
   // Delete from the DB
@@ -63,7 +111,7 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps> {
     start_date: "Fecha de Inicio",
     atm: "ATM",
     suggestion:
-      this.props.actions.length > this.ACTION_LENGTH_OF_UNASSIGNED
+      this.props.actions.length === this.ACTION_LENGTH_OF_UNASSIGNED
         ? "Asignación Sugerida"
         : "Ingeniero Asignado",
     actions: "ACTIONS",
@@ -95,31 +143,70 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps> {
       handler: this.handleDisplayOnMap,
     },
   };
+  INVOKERS = {
+    'ATM': 'ATM',
+    'ENG': 'ENG',
+    'CHANGE': 'CHANGE'
+  }
 
-  displayExtraInfoHandler = (e: any) => {
+  displayExtraInfoHandler = (invoker: string, index: number) => {
     /**
      *  Click come from an specific cell in the table, so we need to find
      * the closest row which is its direct ancestor and from this row
      * get the next row which is the display area.
      */
-    const hiddenElement = e.currentTarget.closest('tr').nextSibling;
-    hiddenElement.className.indexOf("collapse show") > -1 ? hiddenElement.classList.remove("show") : hiddenElement.classList.add("show");
+
+    // The index represent the visible row but the row we want is the next
+    console.log('index', index)
+    index = (index === 0) ? 0 : index - 1
+    switch (invoker) {
+      case this.INVOKERS["ATM"]:
+        console.log("averrr", index)
+        let showExtraInfo = {...this.state.showExtraInfo}
+        showExtraInfo[index].show = !showExtraInfo[index].show;
+        showExtraInfo[index].showExtraInfoATM = !showExtraInfo[index].showExtraInfoATM;
+        this.setState({showExtraInfo})
+        console.log('this.state', this.state)
+        break;
+      case this.INVOKERS["ENG"]:
+        break;
+      case this.INVOKERS["CHANGE"]:
+        break;
+
+      default:
+        break;
+    }
   };
 
   createTable = () => {
-    let table = []
+    let table = [];
 
+    // Traverse 2 * length time because for each ticket row a extra data row is added.
     for (let index = 0; index < this.props.tickets.length * 2; index++) {
       let children = []
       
+      // Ticket row
       if (index % 2 === 0) {
         let ticket = this.props.tickets[index  / 2];
         children.push(<td key={"id" + index}>{ticket._id}</td>)
         children.push(<td key={"startDate" + index}>{ticket.start_date}</td>)
-        children.push(<td key={"atm" + index}> <div onClick={this.displayExtraInfoHandler}> {ticket.atm._id}</div></td>)
+        children.push(
+          <td key={"atm" + index}>
+            {" "}
+            <div onClick={() => this.displayExtraInfoHandler(this.INVOKERS['ATM'], index)}>
+              {" "}
+              {ticket.atm._id}
+            </div>
+          </td>
+        );
         children.push(
           <td key={"eng" + index}>
-            <span className="p-1" onClick={this.displayExtraInfoHandler}>
+            <span
+              className="p-1"
+              onClick={() =>
+                this.displayExtraInfoHandler(this.INVOKERS["ENG"], index)
+              }
+            >
               {
                 this.props.engineers.filter(
                   (engineer) => engineer._id === ticket.engineer
@@ -151,13 +238,25 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps> {
         )
         table.push(<tr key={ticket._id}>{children}</tr>)
       }
+      // Extra info row
       else {
-        children.push(<td key={"extraInfo" + index} colSpan={Object.keys(this.COLUMNS).length}>HOLA</td>)
-        table.push(<tr className="collapse" key={"extraData" + index}>{children}</tr>)
+        let i = index === 1 ? 0 : index - 2;
+        table.push(
+          <ExtraInfoRow
+            keyValue={i}
+            colSpan={5}
+            key={i}
+            show= {this.state.showExtraInfo[i].show || false}
+            showExtraInfoATM= {this.state.showExtraInfo[i].showExtraInfoATM || false}
+            showExtraInfoEngineer= {this.state.showExtraInfo[i].showExtraInfoEngineer || false}
+            showChangeEngineer= {this.state.showExtraInfo[i].showChangeEngineer || false}
+          />
+        );
       }
       
     }
 
+    console.log("returne ", table)
     return table
   }
 
