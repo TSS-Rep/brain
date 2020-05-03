@@ -8,6 +8,7 @@ import BrainMap from "./BrainMap";
 import TicketSchedulerTable from "./TicketSchedulerTable";
 import "./Scheduler.css";
 
+
 class Scheduler extends Component {
   tickets = [
     {
@@ -73,7 +74,7 @@ class Scheduler extends Component {
                 <TicketSchedulerTable
                   tickets={this.tickets}
                   engineers={this.engineers}
-                  actions={["info", "change", "cancel", "displayOnMap"]}
+                  actions={["change", "cancel", "displayOnMap"]}
                 />
               </Card.Body>
             </Card>
@@ -87,7 +88,6 @@ class Scheduler extends Component {
                   actions={[
                     "assign",
                     "change",
-                    "info",
                     "cancel",
                     "displayOnMap",
                   ]}
@@ -95,6 +95,8 @@ class Scheduler extends Component {
               </Card.Body>
             </Card>
           </Col>
+
+          
           <Col>
             <BrainMap tickets={this.tickets} engineers={this.engineers} />
           </Col>

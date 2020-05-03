@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Card from "react-bootstrap/Card";
+import Figure from "react-bootstrap/Figure";
 
 interface MapCardProps {
   lat: number;
@@ -15,9 +15,23 @@ class MapCard extends Component<MapCardProps> {
   render() {
     return (
       <span onClick={this.handleClick}>
-        <Card style={{ width: "20px", height: "20px" }}>
-          <Card.Img variant="top" src="holder.js/100px180" />
-        </Card>
+        <Figure>
+          {this.props.service ? (
+            <Figure.Image
+              width={30}
+              height={30}
+              alt="171x180"
+              src={process.env.PUBLIC_URL + "/img/STD_LOGO.png"}
+            />
+          ) : (
+            <Figure.Image
+              width={30}
+              height={30}
+              alt="171x180"
+              src={process.env.PUBLIC_URL + "/img/ENG_LOGO.png"}
+            />
+          )}
+        </Figure>
       </span>
     );
   }
