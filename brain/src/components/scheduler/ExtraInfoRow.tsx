@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-// import { ExtraInfoATM } from "./ExtraInfoATM";
+import { ExtraInfoATM } from "./ExtraInfoATM";
 
 
 interface ExtraInfoRowProps {
@@ -10,7 +10,19 @@ interface ExtraInfoRowProps {
     showExtraInfoATM: boolean;
     showExtraInfoEngineer: boolean;
     showChangeEngineer: boolean;
+    atm: {
+      _id: string;
+      brand: string;
+      model: string;
+      service: string;
+      coor: {
+        lat: number;
+        lng: number;
+      };
+    };
 }
+
+
 export default class ExtraInfoRow extends Component<ExtraInfoRowProps> {
     render() {
         const className = (this.props.show) ? "collapse show" : "collapse"
@@ -21,7 +33,9 @@ export default class ExtraInfoRow extends Component<ExtraInfoRowProps> {
               key={"extraInfoCell" + this.props.keyValue}
               colSpan={this.props.colSpan}
             >
-              HOLA
+              {
+                  this.props.show && this.props.showExtraInfoATM && <ExtraInfoATM atm={this.props.atm}/>
+              }
             </td>
           </tr>
         );

@@ -240,16 +240,19 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
       }
       // Extra info row
       else {
+        let ticket = this.props.tickets[(index - 1) / 2];
         let i = index === 1 ? 0 : index - 2;
+        console.log(Object.keys(this.COLUMNS).length);
         table.push(
           <ExtraInfoRow
             keyValue={i}
-            colSpan={5}
+            colSpan={Object.keys(this.COLUMNS).length}
             key={i}
             show= {this.state.showExtraInfo[i].show || false}
             showExtraInfoATM= {this.state.showExtraInfo[i].showExtraInfoATM || false}
             showExtraInfoEngineer= {this.state.showExtraInfo[i].showExtraInfoEngineer || false}
             showChangeEngineer= {this.state.showExtraInfo[i].showChangeEngineer || false}
+            atm={ticket.atm}
           />
         );
       }
