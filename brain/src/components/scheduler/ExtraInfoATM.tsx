@@ -24,7 +24,7 @@ interface ExtraInfoATMProps {
 
 export const ExtraInfoATM: React.SFC<ExtraInfoATMProps> = (props) => {
     return (
-      <div>
+      <div className="p-1">
         <Card style={{ width: "100%" }}>
           <Card.Body>
             <Card.Title>{props.atm._id}</Card.Title>
@@ -50,7 +50,7 @@ export const ExtraInfoATM: React.SFC<ExtraInfoATMProps> = (props) => {
               <b>Dirección: </b>
               {getCompleteAddress(props.atm)}
             </Card.Subtitle>
-            <Card.Link href="#">Ver más estadísticas</Card.Link>
+            <Card.Link href="#">Ver estadísticas</Card.Link>
           </Card.Body>
         </Card>
       </div>

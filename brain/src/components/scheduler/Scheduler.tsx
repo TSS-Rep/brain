@@ -59,12 +59,18 @@ class Scheduler extends Component {
   ];
   engineers = [
     {
-      name: "Fernando Arias",
+      name: "CALVILLO FLORIANO JOSE DE JESUS",
       _id: 1730276,
       coor: {
         lat: 19.7682414,
         lng: -99.0436029,
       },
+      region: "NORTE",
+      sub_region: "NOROESTE",
+      state: "AGUASCALIENTES",
+      city: "AGUASCALIENTES",
+      platform: "Self Service",
+      manager: "Cynthia Plata",
     },
 
     {
@@ -74,6 +80,12 @@ class Scheduler extends Component {
         lat: 19.4326071,
         lng: -99.13921299999999,
       },
+      region: "NORTE",
+      sub_region: "NOROESTE",
+      state: "AGUASCALIENTES",
+      city: "AGUASCALIENTES",
+      platform: "Self Service",
+      manager: "Cynthia Plata",
     },
   ];
 
