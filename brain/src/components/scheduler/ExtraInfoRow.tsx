@@ -12,9 +12,16 @@ interface ExtraInfoRowProps {
     showChangeEngineer: boolean;
     atm: {
       _id: string;
+      address: string;
+      suburb: string;
+      postal_code: number;
+      city: string;
+      state: string;
       brand: string;
       model: string;
       service: string;
+      region: string,
+      service_time: string,
       coor: {
         lat: number;
         lng: number;

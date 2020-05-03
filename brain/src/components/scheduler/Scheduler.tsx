@@ -15,9 +15,16 @@ class Scheduler extends Component {
       _id: "P267349",
       atm: {
         _id: "X99314",
+        address: "AV. VIA MORELOS NO. 242",
+        suburb: "SANTA MARIA TULPETLAC",
+        postal_code: 55400,
+        city: "ECATEPEC DE MORELOS",
+        state: "ESTADO DE MEXICO",
         service: "SUC",
         brand: "DIEBOLD",
         model: "NEXTGEN 3700",
+        region: "METRO NORTE",
+        service_time: "L-V 09:00-16:00",
         coor: {
           lat: 19.5682414,
           lng: -99.0436029,
@@ -31,9 +38,16 @@ class Scheduler extends Component {
       _id: "P265372",
       atm: {
         _id: "X99314",
+        address: "AV. VIA MORELOS NO. 242",
+        suburb: "SANTA MARIA TULPETLAC",
+        postal_code: 55400,
+        city: "ECATEPEC DE MORELOS",
+        state: "ESTADO DE MEXICO",
         service: "SUC",
         brand: "DIEBOLD",
         model: "NEXTGEN 3700",
+        region: "METRO NORTE",
+        service_time: "L-V 09:00-16:00",
         coor: {
           lat: 19.5692414,
           lng: -99.0436029,
@@ -85,18 +99,12 @@ class Scheduler extends Component {
                 <TicketSchedulerTable
                   tickets={this.tickets}
                   engineers={this.engineers}
-                  actions={[
-                    "assign",
-                    "change",
-                    "cancel",
-                    "displayOnMap",
-                  ]}
+                  actions={["assign", "change", "cancel", "displayOnMap"]}
                 />
               </Card.Body>
             </Card>
           </Col>
 
-          
           <Col>
             <BrainMap tickets={this.tickets} engineers={this.engineers} />
           </Col>
