@@ -13,9 +13,16 @@ interface TicketSchedulerTableProps {
     _id: string;
     atm: {
       _id: string;
+      address: string;
+      suburb: string;
+      postal_code: number;
+      city: string;
+      state: string;
       brand: string;
       model: string;
       service: string;
+      region: string,
+      service_time: string,
       coor: {
         lat: number;
         lng: number;
@@ -28,6 +35,12 @@ interface TicketSchedulerTableProps {
     name: string;
     _id: number;
     coor: { lat: number; lng: number };
+    region: string;
+    sub_region: string;
+    state: string;
+    city: string;
+    platform: string;
+    manager: string;
   }[];
   actions: string[];
   handleShowMore?: any
@@ -150,25 +163,17 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
   }
 
   displayExtraInfoHandler = (invoker: string, index: number) => {
-    /**
-     *  Click come from an specific cell in the table, so we need to find
-     * the closest row which is its direct ancestor and from this row
-     * get the next row which is the display area.
-     */
-
+    let eng, change, atm;
     // The index represent the visible row but the row we want is the next
-    console.log('index', index)
     index = (index === 0) ? 0 : index - 1
+    let showExtraInfo = { ...this.state.showExtraInfo };
+
     switch (invoker) {
       case this.INVOKERS["ATM"]:
-        console.log("averrr", index)
-        let showExtraInfo = {...this.state.showExtraInfo}
-        showExtraInfo[index].show = !showExtraInfo[index].show;
         showExtraInfo[index].showExtraInfoATM = !showExtraInfo[index].showExtraInfoATM;
-        this.setState({showExtraInfo})
-        console.log('this.state', this.state)
         break;
       case this.INVOKERS["ENG"]:
+        showExtraInfo[index].showExtraInfoEngineer = !showExtraInfo[index].showExtraInfoEngineer;
         break;
       case this.INVOKERS["CHANGE"]:
         break;
@@ -176,6 +181,13 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
       default:
         break;
     }
+
+    eng = showExtraInfo[index].showExtraInfoEngineer;
+    change = showExtraInfo[index].showChangeEngineer;
+    atm = showExtraInfo[index].showExtraInfoATM;
+    showExtraInfo[index].show =
+      eng || change || atm ? true : !showExtraInfo[index].show;
+    this.setState({ showExtraInfo });
   };
 
   createTable = () => {
@@ -188,6 +200,9 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
       // Ticket row
       if (index % 2 === 0) {
         let ticket = this.props.tickets[index  / 2];
+        let engineerName = this.props.engineers.filter(
+          (engineer) => engineer._id === ticket.engineer
+        )[0].name;
         children.push(<td key={"id" + index}>{ticket._id}</td>)
         children.push(<td key={"startDate" + index}>{ticket.start_date}</td>)
         children.push(
@@ -207,11 +222,7 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
                 this.displayExtraInfoHandler(this.INVOKERS["ENG"], index)
               }
             >
-              {
-                this.props.engineers.filter(
-                  (engineer) => engineer._id === ticket.engineer
-                )[0].name
-              }
+              {engineerName}
             </span>
             <span>
               {<Badge variant={true ? "success" : "danger"}>0.8</Badge>}
@@ -241,6 +252,9 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
       // Extra info row
       else {
         let ticket = this.props.tickets[(index - 1) / 2];
+        let engineer = this.props.engineers.filter(
+          (engineer) => engineer._id === ticket.engineer
+        )[0];
         let i = index === 1 ? 0 : index - 2;
         console.log(Object.keys(this.COLUMNS).length);
         table.push(
@@ -253,6 +267,7 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
             showExtraInfoEngineer= {this.state.showExtraInfo[i].showExtraInfoEngineer || false}
             showChangeEngineer= {this.state.showExtraInfo[i].showChangeEngineer || false}
             atm={ticket.atm}
+            engineer={engineer}
           />
         );
       }

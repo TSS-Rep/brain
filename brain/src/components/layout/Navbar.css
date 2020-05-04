@@ -1,18 +1,18 @@
 #brainLogo {
-  height: 50px;
-  padding-bottom: 10px;
+    height: 50px;
+    padding-bottom: 10px;
 }
 
 #brainTitle {
-  width: 100px;
-  height: 15px;
-  padding-bottom: 10px;
+    width: 100px;
+    height: 15px;
+    padding-bottom: 10px;
 }
 
 #brainNav {
-  background-color: black;
+    background-color: black;
 }
 
 #brainNavFooter {
-  background-color: black;
+    background-color: black;
 }

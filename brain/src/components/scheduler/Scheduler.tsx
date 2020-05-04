@@ -15,9 +15,16 @@ class Scheduler extends Component {
       _id: "P267349",
       atm: {
         _id: "X99314",
+        address: "AV. VIA MORELOS NO. 242",
+        suburb: "SANTA MARIA TULPETLAC",
+        postal_code: 55400,
+        city: "ECATEPEC DE MORELOS",
+        state: "ESTADO DE MEXICO",
         service: "SUC",
         brand: "DIEBOLD",
         model: "NEXTGEN 3700",
+        region: "METRO NORTE",
+        service_time: "L-V 09:00-16:00",
         coor: {
           lat: 19.5682414,
           lng: -99.0436029,
@@ -31,9 +38,16 @@ class Scheduler extends Component {
       _id: "P265372",
       atm: {
         _id: "X99314",
+        address: "AV. VIA MORELOS NO. 242",
+        suburb: "SANTA MARIA TULPETLAC",
+        postal_code: 55400,
+        city: "ECATEPEC DE MORELOS",
+        state: "ESTADO DE MEXICO",
         service: "SUC",
         brand: "DIEBOLD",
         model: "NEXTGEN 3700",
+        region: "METRO NORTE",
+        service_time: "L-V 09:00-16:00",
         coor: {
           lat: 19.5692414,
           lng: -99.0436029,
@@ -45,12 +59,18 @@ class Scheduler extends Component {
   ];
   engineers = [
     {
-      name: "Fernando Arias",
+      name: "CALVILLO FLORIANO JOSE DE JESUS",
       _id: 1730276,
       coor: {
         lat: 19.7682414,
         lng: -99.0436029,
       },
+      region: "NORTE",
+      sub_region: "NOROESTE",
+      state: "AGUASCALIENTES",
+      city: "AGUASCALIENTES",
+      platform: "Self Service",
+      manager: "Cynthia Plata",
     },
 
     {
@@ -60,6 +80,12 @@ class Scheduler extends Component {
         lat: 19.4326071,
         lng: -99.13921299999999,
       },
+      region: "NORTE",
+      sub_region: "NOROESTE",
+      state: "AGUASCALIENTES",
+      city: "AGUASCALIENTES",
+      platform: "Self Service",
+      manager: "Cynthia Plata",
     },
   ];
 
@@ -85,18 +111,12 @@ class Scheduler extends Component {
                 <TicketSchedulerTable
                   tickets={this.tickets}
                   engineers={this.engineers}
-                  actions={[
-                    "assign",
-                    "change",
-                    "cancel",
-                    "displayOnMap",
-                  ]}
+                  actions={["assign", "change", "cancel", "displayOnMap"]}
                 />
               </Card.Body>
             </Card>
           </Col>
 
-          
           <Col>
             <BrainMap tickets={this.tickets} engineers={this.engineers} />
           </Col>
