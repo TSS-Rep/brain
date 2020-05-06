@@ -45,7 +45,7 @@ interface ExtraInfoRowProps {
 export default class ExtraInfoRow extends Component<ExtraInfoRowProps> {
     render() {
         const className = (this.props.show) ? "collapse show" : "collapse"
-        console.log('this.props.show', this.props.show)
+
         return (
           <tr className={className} key={"extraInfoRow" + this.props.keyValue}>
             <td
