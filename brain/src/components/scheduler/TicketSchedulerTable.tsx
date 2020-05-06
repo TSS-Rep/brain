@@ -43,7 +43,11 @@ interface TicketSchedulerTableProps {
     manager: string;
   }[];
   actions: string[];
-  handleShowMore?: any
+  handleShowMore?: any;
+  ticketsShowedOnMap: {
+      [key: string]: boolean;
+  }
+  handleTicketsShowedOnMapState(ticketsShowedOnMap:showOnMap): void;
 }
 
 interface TicketSchedulerTableState {
@@ -66,6 +70,9 @@ type action = {
   };
 };
 
+type showOnMap = {
+  [key:string]: boolean;
+}
 type showRowsState = [{
     show: boolean;
     showExtraInfoATM: boolean;
@@ -73,12 +80,14 @@ type showRowsState = [{
     showChangeEngineer: boolean;
   }]
 
-class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSchedulerTableState> {
-
+class TicketSchedulerTable extends Component<
+  TicketSchedulerTableProps,
+  TicketSchedulerTableState
+> {
   // Declare state property and annotate it with TicketSchedulerTableState
-  state: TicketSchedulerTableState
+  state: TicketSchedulerTableState;
   constructor(props: TicketSchedulerTableProps) {
-    super(props)
+    super(props);
 
     let showExtraInfo: showRowsState = [
       {
@@ -88,7 +97,8 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
         showChangeEngineer: false,
       },
     ];
-    for(let i = 0; i < this.props.tickets.length - 1; i++){
+
+    for (let i = 0; i < this.props.tickets.length - 1; i++) {
       showExtraInfo.push({
         show: false,
         showExtraInfoATM: false,
@@ -96,11 +106,10 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
         showChangeEngineer: false,
       });
     }
-    console.log(showExtraInfo.length);
-    this.state = {showExtraInfo};
 
+    this.state = { showExtraInfo };
   }
-  
+
   // Delete from the DB
   private handleTicketAssign = async (e: any) => {
     console.log(e);
@@ -111,12 +120,15 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
   };
   // Delete from the DB
   private handleEnginnerChange = async (e: any) => {
-    this.displayExtraInfoHandler(this.INVOKERS['CHANGE'], 0);
+    this.displayExtraInfoHandler(this.INVOKERS["CHANGE"], 0);
     console.log(e);
   };
   // Delete from the DB
-  private handleDisplayOnMap = async (e: any) => {
-    console.log(e);
+  private handleDisplayOnMap = async (ticketId: string) => {
+    console.log(ticketId)
+    let ticketsShowedOnMap: showOnMap = { ...this.props.ticketsShowedOnMap };
+    ticketsShowedOnMap[ticketId] = !ticketsShowedOnMap[ticketId]
+    this.props.handleTicketsShowedOnMapState(ticketsShowedOnMap);
   };
   ACTION_LENGTH_OF_UNASSIGNED = 4;
   COLUMNS = {
@@ -150,30 +162,27 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
       icon: <MdLocationOn />,
       handler: this.handleDisplayOnMap,
     },
-    noDisplayOnMap: {
-      color: "green",
-      icon: <MdLocationOff />,
-      handler: this.handleDisplayOnMap,
-    },
   };
   INVOKERS = {
-    'ATM': 'ATM',
-    'ENG': 'ENG',
-    'CHANGE': 'CHANGE'
-  }
+    ATM: "ATM",
+    ENG: "ENG",
+    CHANGE: "CHANGE",
+  };
 
   displayExtraInfoHandler = (invoker: string, index: number) => {
     let eng, change, atm;
     // The index represent the visible row but the row we want is the next
-    index = (index === 0) ? 0 : index - 1
+    index = index === 0 ? 0 : index - 1;
     let showExtraInfo = { ...this.state.showExtraInfo };
 
     switch (invoker) {
       case this.INVOKERS["ATM"]:
-        showExtraInfo[index].showExtraInfoATM = !showExtraInfo[index].showExtraInfoATM;
+        showExtraInfo[index].showExtraInfoATM = !showExtraInfo[index]
+          .showExtraInfoATM;
         break;
       case this.INVOKERS["ENG"]:
-        showExtraInfo[index].showExtraInfoEngineer = !showExtraInfo[index].showExtraInfoEngineer;
+        showExtraInfo[index].showExtraInfoEngineer = !showExtraInfo[index]
+          .showExtraInfoEngineer;
         break;
       case this.INVOKERS["CHANGE"]:
         break;
@@ -190,25 +199,37 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
     this.setState({ showExtraInfo });
   };
 
+  getDisplayOnMapIcon(ticketId: string) {
+    if (this.props.ticketsShowedOnMap[ticketId])  {
+      return <MdLocationOn />
+    }
+    return <MdLocationOff />
+  }
+
   createTable = () => {
     let table = [];
 
     // Traverse 2 * length time because for each ticket row a extra data row is added.
     for (let index = 0; index < this.props.tickets.length * 2; index++) {
-      let children = []
-      
+      let children = [];
+
       // Ticket row
       if (index % 2 === 0) {
-        let ticket = this.props.tickets[index  / 2];
+        let ticket = this.props.tickets[index / 2];
         let engineerName = this.props.engineers.filter(
           (engineer) => engineer._id === ticket.engineer
         )[0].name;
-        children.push(<td key={"id" + index}>{ticket._id}</td>)
-        children.push(<td key={"startDate" + index}>{ticket.start_date}</td>)
+
+        children.push(<td key={"id" + index}>{ticket._id}</td>);
+        children.push(<td key={"startDate" + index}>{ticket.start_date}</td>);
         children.push(
           <td key={"atm" + index}>
             {" "}
-            <div onClick={() => this.displayExtraInfoHandler(this.INVOKERS['ATM'], index)}>
+            <div
+              onClick={() =>
+                this.displayExtraInfoHandler(this.INVOKERS["ATM"], index)
+              }
+            >
               {" "}
               {ticket.atm._id}
             </div>
@@ -229,7 +250,8 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
             </span>
           </td>
         );
-        children.push(<td key={"actions" + index}>
+        children.push(
+          <td key={"actions" + index}>
             {this.props.actions.map((action) => (
               <IconContext.Provider
                 key={action + index}
@@ -238,16 +260,18 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
                 }}
               >
                 <span
-                  onClick={this.ACTIONS[action].handler.bind(this)}
+                  onClick={() => this.ACTIONS[action].handler(ticket._id)}
                   className="active p-1"
                 >
-                  {this.ACTIONS[action].icon}
+                  {action === "displayOnMap"
+                    ? this.getDisplayOnMapIcon(ticket._id)
+                    : this.ACTIONS[action].icon}
                 </span>
               </IconContext.Provider>
             ))}
           </td>
-        )
-        table.push(<tr key={ticket._id}>{children}</tr>)
+        );
+        table.push(<tr key={ticket._id}>{children}</tr>);
       }
       // Extra info row
       else {
@@ -256,27 +280,31 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
           (engineer) => engineer._id === ticket.engineer
         )[0];
         let i = index === 1 ? 0 : index - 2;
-        console.log(Object.keys(this.COLUMNS).length);
+
         table.push(
           <ExtraInfoRow
             keyValue={i}
             colSpan={Object.keys(this.COLUMNS).length}
             key={i}
-            show= {this.state.showExtraInfo[i].show || false}
-            showExtraInfoATM= {this.state.showExtraInfo[i].showExtraInfoATM || false}
-            showExtraInfoEngineer= {this.state.showExtraInfo[i].showExtraInfoEngineer || false}
-            showChangeEngineer= {this.state.showExtraInfo[i].showChangeEngineer || false}
+            show={this.state.showExtraInfo[i].show || false}
+            showExtraInfoATM={
+              this.state.showExtraInfo[i].showExtraInfoATM || false
+            }
+            showExtraInfoEngineer={
+              this.state.showExtraInfo[i].showExtraInfoEngineer || false
+            }
+            showChangeEngineer={
+              this.state.showExtraInfo[i].showChangeEngineer || false
+            }
             atm={ticket.atm}
             engineer={engineer}
           />
         );
       }
-      
     }
 
-    console.log("returne ", table)
-    return table
-  }
+    return table;
+  };
 
   render() {
     return (
@@ -288,11 +316,7 @@ class TicketSchedulerTable extends Component<TicketSchedulerTableProps, TicketSc
             ))}
           </tr>
         </thead>
-        <tbody>
-          {
-            this.createTable()
-          }
-        </tbody>
+        <tbody>{this.createTable()}</tbody>
       </Table>
     );
   }
