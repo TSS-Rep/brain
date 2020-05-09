@@ -2,15 +2,11 @@ import React, { Component } from 'react'
 
 import { ExtraInfoATM } from "./ExtraInfoATM";
 import { ExtraInfoEngineer } from "./ExtraInfoEngineer";
+import { ExtraInfoChangeEngineer } from "./ExtraInfoChangeEngineer";
 
 
-interface ExtraInfoRowProps {
-    colSpan: number;
-    keyValue: number;
-    show: boolean;
-    showExtraInfoATM: boolean;
-    showExtraInfoEngineer: boolean;
-    showChangeEngineer: boolean;
+interface Ticket {
+    _id: string;
     atm: {
       _id: string;
       address: string;
@@ -28,17 +24,32 @@ interface ExtraInfoRowProps {
         lng: number;
       };
     };
-    engineer: {
-        name: string;
-        _id: number;
-        coor: { lat: number; lng: number };
-        region: string;
-        sub_region: string;
-        state: string;
-        city: string;
-        platform: string;
-        manager: string;
-    }
+    start_date: string;
+    engineer?: number;
+  }
+
+interface Engineer {
+  name: string;
+  _id: number;
+  coor: { lat: number; lng: number };
+  region: string;
+  sub_region: string;
+  state: string;
+  city: string;
+  platform: string;
+  manager: string;
+}
+
+interface ExtraInfoRowProps {
+    colSpan: number;
+    keyValue: number;
+    show: boolean;
+    showExtraInfoATM: boolean;
+    showExtraInfoEngineer: boolean;
+    showChangeEngineer: boolean;
+    ticket: Ticket;
+
+    engineer: Engineer;
 }
 
 
@@ -53,10 +64,13 @@ export default class ExtraInfoRow extends Component<ExtraInfoRowProps> {
               colSpan={this.props.colSpan}
             >
               {this.props.show && this.props.showExtraInfoATM && (
-                <ExtraInfoATM atm={this.props.atm} />
+                <ExtraInfoATM atm={this.props.ticket.atm} />
               )}
               {this.props.show && this.props.showExtraInfoEngineer && (
                 <ExtraInfoEngineer engineer={this.props.engineer} />
+              )}
+              {this.props.show && this.props.showChangeEngineer && (
+                <ExtraInfoChangeEngineer ticket={this.props.ticket} />
               )}
             </td>
           </tr>

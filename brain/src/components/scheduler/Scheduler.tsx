@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 
 import BrainMap from "./BrainMap";
-import TicketSchedulerTable from "./TicketSchedulerTable";
+import TicketSchedulerTable from "./SchedulerTicketTable";
 import "./Scheduler.css";
 
 
@@ -36,7 +36,7 @@ interface Ticket {
       };
     };
     start_date: string;
-    engineer: number;
+    engineer?: number;
   }
 
 type showOnMap = {
@@ -94,7 +94,7 @@ class Scheduler extends Component {
           },
         },
         start_date: "25/04/2020 11:42",
-        engineer: 1730276,
+        engineer: 1376310,
       },
     ];
     this.engineers = [
