@@ -21,7 +21,7 @@ interface MapProps {
       };
     };
     start_date: string;
-    engineer: number;
+    engineer?: number;
   }[];
   engineers: {
     name: string;

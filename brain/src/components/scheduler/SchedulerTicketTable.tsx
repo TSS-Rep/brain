@@ -29,7 +29,7 @@ interface TicketSchedulerTableProps {
       };
     };
     start_date: string;
-    engineer: number;
+    engineer?: number;
   }[];
   engineers: {
     name: string;
@@ -185,6 +185,8 @@ class TicketSchedulerTable extends Component<
           .showExtraInfoEngineer;
         break;
       case this.INVOKERS["CHANGE"]:
+        showExtraInfo[index].showChangeEngineer = !showExtraInfo[index]
+          .showChangeEngineer;
         break;
 
       default:
@@ -296,7 +298,7 @@ class TicketSchedulerTable extends Component<
             showChangeEngineer={
               this.state.showExtraInfo[i].showChangeEngineer || false
             }
-            atm={ticket.atm}
+            ticket={ticket}
             engineer={engineer}
           />
         );
