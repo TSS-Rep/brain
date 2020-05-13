@@ -23,7 +23,7 @@ interface TicketSchedulerTableProps {
       service: string;
       region: string,
       service_time: string,
-      reincident: boolean;
+      recurrent: boolean;
       coor: {
         lat: number;
         lng: number;
@@ -233,10 +233,10 @@ class TicketSchedulerTable extends Component<
                 this.displayExtraInfoHandler(this.INVOKERS["ATM"], index)
               }
             >
-              {ticket.atm.reincident && (
+              {ticket.atm.recurrent && (
                 <Badge variant={"danger"}>{ticket.atm._id}</Badge>
               )}
-              {!ticket.atm.reincident && ticket.atm._id}
+              {!ticket.atm.recurrent && ticket.atm._id}
             </div>
           </td>
         );

@@ -15,7 +15,7 @@ interface ExtraInfoATMProps {
       service: string;
       region: string,
       service_time: string,
-      reincident: boolean;
+      recurrent: boolean;
       coor: {
         lat: number;
         lng: number;

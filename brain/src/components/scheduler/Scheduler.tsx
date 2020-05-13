@@ -29,7 +29,7 @@ interface Ticket {
     service: string;
     region: string;
     service_time: string;
-    reincident: boolean;
+    recurrent: boolean;
     coor: {
       lat: number;
       lng: number;
@@ -65,7 +65,7 @@ class Scheduler extends Component {
           model: "NEXTGEN 3700",
           region: "METRO NORTE",
           service_time: "L-V 09:00-16:00",
-          reincident: false,
+          recurrent: false,
           coor: {
             lat: 19.5682414,
             lng: -99.0436029,
@@ -89,7 +89,7 @@ class Scheduler extends Component {
           model: "NEXTGEN 3700",
           region: "METRO NORTE",
           service_time: "L-V 09:00-16:00",
-          reincident: true,
+          recurrent: true,
           coor: {
             lat: 19.5092414,
             lng: -99.0836029,
