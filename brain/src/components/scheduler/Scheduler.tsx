@@ -8,40 +8,40 @@ import BrainMap from "./BrainMap";
 import TicketSchedulerTable from "./SchedulerTicketTable";
 import "./Scheduler.css";
 
-
 interface SchedulerState {
   tickets: Ticket[] | [];
   ticketsShowedOnMap: {
-      [key: string]: boolean;
+    [key: string]: boolean;
   };
 }
 
 interface Ticket {
+  _id: string;
+  atm: {
     _id: string;
-    atm: {
-      _id: string;
-      address: string;
-      suburb: string;
-      postal_code: number;
-      city: string;
-      state: string;
-      brand: string;
-      model: string;
-      service: string;
-      region: string,
-      service_time: string,
-      coor: {
-        lat: number;
-        lng: number;
-      };
+    address: string;
+    suburb: string;
+    postal_code: number;
+    city: string;
+    state: string;
+    brand: string;
+    model: string;
+    service: string;
+    region: string;
+    service_time: string;
+    recurrent: boolean;
+    coor: {
+      lat: number;
+      lng: number;
     };
-    start_date: string;
-    engineer?: number;
-  }
+  };
+  start_date: string;
+  engineer?: number;
+}
 
 type showOnMap = {
-  [key:string]: boolean;
-}
+  [key: string]: boolean;
+};
 
 class Scheduler extends Component {
   private tickets: Ticket[];
@@ -65,6 +65,7 @@ class Scheduler extends Component {
           model: "NEXTGEN 3700",
           region: "METRO NORTE",
           service_time: "L-V 09:00-16:00",
+          recurrent: false,
           coor: {
             lat: 19.5682414,
             lng: -99.0436029,
@@ -88,9 +89,10 @@ class Scheduler extends Component {
           model: "NEXTGEN 3700",
           region: "METRO NORTE",
           service_time: "L-V 09:00-16:00",
+          recurrent: true,
           coor: {
-            lat: 19.5692414,
-            lng: -99.0436029,
+            lat: 19.5092414,
+            lng: -99.0836029,
           },
         },
         start_date: "25/04/2020 11:42",
@@ -102,8 +104,8 @@ class Scheduler extends Component {
         name: "CALVILLO FLORIANO JOSE DE JESUS",
         _id: 1730276,
         coor: {
-          lat: 19.7682414,
-          lng: -99.0436029,
+          lat: 19.5292414,
+          lng: -99.0611029,
         },
         region: "NORTE",
         sub_region: "NOROESTE",
@@ -142,8 +144,8 @@ class Scheduler extends Component {
   }
 
   handleTicketsShowedOnMapState(ticketsShowedOnMap: showOnMap) {
-    console.log(ticketsShowedOnMap)
-    this.setState({ticketsShowedOnMap})
+    console.log(ticketsShowedOnMap);
+    this.setState({ ticketsShowedOnMap });
   }
 
   render() {
@@ -159,7 +161,9 @@ class Scheduler extends Component {
                   engineers={this.engineers}
                   actions={["change", "cancel", "displayOnMap"]}
                   ticketsShowedOnMap={this.state.ticketsShowedOnMap}
-                  handleTicketsShowedOnMapState={this.handleTicketsShowedOnMapState.bind(this)}
+                  handleTicketsShowedOnMapState={this.handleTicketsShowedOnMapState.bind(
+                    this
+                  )}
                 />
               </Card.Body>
             </Card>
@@ -172,7 +176,9 @@ class Scheduler extends Component {
                   engineers={this.engineers}
                   actions={["assign", "change", "cancel", "displayOnMap"]}
                   ticketsShowedOnMap={this.state.ticketsShowedOnMap}
-                  handleTicketsShowedOnMapState={this.handleTicketsShowedOnMapState.bind(this)}
+                  handleTicketsShowedOnMapState={this.handleTicketsShowedOnMapState.bind(
+                    this
+                  )}
                 />
               </Card.Body>
             </Card>

@@ -19,6 +19,7 @@ interface MapProps {
         lat: number;
         lng: number;
       };
+      recurrent: boolean;
     };
     start_date: string;
     engineer?: number;

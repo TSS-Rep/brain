@@ -19,6 +19,7 @@ interface Ticket {
       service: string;
       region: string,
       service_time: string,
+      recurrent: boolean;
       coor: {
         lat: number;
         lng: number;

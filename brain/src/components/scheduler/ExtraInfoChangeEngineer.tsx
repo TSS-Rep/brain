@@ -1,32 +1,34 @@
 import React, { Component } from "react";
+
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import Badge from "react-bootstrap/Badge";
 
 interface Ticket {
-    _id: string;
-    atm: ATM
-    start_date: string;
-    engineer?: number;
-  }
+  _id: string;
+  atm: ATM;
+  start_date: string;
+  engineer?: number;
+}
 
 interface ATM {
-      _id: string;
-      address: string;
-      suburb: string;
-      postal_code: number;
-      city: string;
-      state: string;
-      brand: string;
-      model: string;
-      service: string;
-      region: string,
-      service_time: string,
-      coor: {
-        lat: number;
-        lng: number;
-      };
-    };
+  _id: string;
+  address: string;
+  suburb: string;
+  postal_code: number;
+  city: string;
+  state: string;
+  brand: string;
+  model: string;
+  service: string;
+  region: string;
+  service_time: string;
+  recurrent: boolean;
+  coor: {
+    lat: number;
+    lng: number;
+  };
+}
 
 interface Engineer {
   name: string;
@@ -40,19 +42,42 @@ interface Engineer {
   manager: string;
 }
 interface ExtraInfoChangeEngineerProps {
-    ticket: Ticket;
+  ticket: Ticket;
 }
 
-const COLUMN_NAMES = ["Nombre", "Conveniencia"]
+const COLUMN_NAMES = [
+  "Nombre",
+  "Conveniencia",
+  "Tiempo de Llegada",
+  "Distancia",
+];
 
-export class ExtraInfoChangeEngineer extends Component<ExtraInfoChangeEngineerProps> {
+export class ExtraInfoChangeEngineer extends Component<
+  ExtraInfoChangeEngineerProps
+> {
   engineersRecommended: Engineer[];
-  constructor(props: ExtraInfoChangeEngineerProps){
-    super(props)
-
-    this.engineersRecommended = this.getEngineersRecommended(this.props.ticket)
-
+  state: any;
+  constructor(props: ExtraInfoChangeEngineerProps) {
+    super(props);
+    this.engineersRecommended = this.getEngineersRecommended(this.props.ticket);
+    this.state = this.initState();
+    console.log(this.engineersRecommended);
+    console.log(this.state);
+    this.engineersRecommended.forEach(eng => {
+      this.getDistance(eng._id, this.props.ticket.atm.coor, eng.coor);
+    })
   }
+
+  initState = () => {
+    let st: any = {};
+    this.engineersRecommended.forEach((eng) => {
+      st[eng._id] = {
+        time: 0,
+        distance: 0,
+      };
+    });
+    return st;
+  };
   // This should be a request to ML server.
   getEngineersRecommended = (ticket: Ticket) => {
     console.log(ticket.atm._id);
@@ -89,6 +114,31 @@ export class ExtraInfoChangeEngineer extends Component<ExtraInfoChangeEngineerPr
     ];
     return engineers;
   };
+  // This will be added in the backend and the distance result will be part of tthe recomendation
+  getDistance = (eng: number, origin: any, dest: any) => {
+    const DistanceMatrixService = new google.maps.DistanceMatrixService();
+    DistanceMatrixService.getDistanceMatrix(
+      {
+        origins: [origin],
+        destinations: [dest],
+        travelMode: google.maps.TravelMode.DRIVING,
+      },
+      (res, status) => {
+        if (status !== google.maps.DistanceMatrixStatus.OK) {
+          alert("Error was: " + status);
+        } else {
+          console.log(res);
+          let state: any = {};
+          state[eng] = {
+            time: res.rows[0].elements[0].duration.text,
+            distance: res.rows[0].elements[0].distance.text,
+          };
+          this.setState(state);
+        }
+      }
+    );
+  };
+
   render() {
     return (
       <div className="p-1">
@@ -99,20 +149,50 @@ export class ExtraInfoChangeEngineer extends Component<ExtraInfoChangeEngineerPr
               <thead>
                 <tr>
                   {COLUMN_NAMES.map((column) => (
-                    <th>{column}</th>
+                    <th key={`column_${column}`}>{column}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {this.engineersRecommended.map((engineer) => (
-                  <tr>
-                    <td onDoubleClick={() => window.alert("double")}>{engineer.name}</td>
+                  <tr key={`row_${engineer._id}`}>
+                    <td onDoubleClick={() => window.alert("double")}>
+                      {engineer.name}
+                    </td>
                     <td>
                       {
                         <Badge variant={true ? "warning" : "danger"}>
                           0.65
                         </Badge>
                       }
+                    </td>
+                    <td>
+                      <span
+                        key={engineer._id}
+                        onClick={() =>
+                          this.getDistance(
+                            engineer._id,
+                            this.props.ticket.atm.coor,
+                            engineer.coor
+                          )
+                        }
+                      >
+                        {this.state[engineer._id].time}
+                      </span>
+                    </td>
+                    <td>
+                      <span
+                        key={engineer._id}
+                        onClick={() =>
+                          this.getDistance(
+                            engineer._id,
+                            this.props.ticket.atm.coor,
+                            engineer.coor
+                          )
+                        }
+                      >
+                        {this.state[engineer._id].distance}
+                      </span>
                     </td>
                   </tr>
                 ))}
