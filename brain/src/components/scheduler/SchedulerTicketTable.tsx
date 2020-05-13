@@ -111,21 +111,21 @@ class TicketSchedulerTable extends Component<
   }
 
   // Delete from the DB
-  private handleTicketAssign = async (e: any) => {
-    console.log(e);
+  private handleTicketAssign = async (e: any, index:number) => {
+    console.log(e, index);
   };
   // Delete from the DB
-  private handleTicketCancelation = async (e: any) => {
-    console.log(e);
+  private handleTicketCancelation = async (e: any, index:number) => {
+    console.log(e, index);
   };
   // Delete from the DB
-  private handleEnginnerChange = async (e: any) => {
-    this.displayExtraInfoHandler(this.INVOKERS["CHANGE"], 0);
-    console.log(e);
+  private handleEnginnerChange = async (e: any, index:number) => {
+    this.displayExtraInfoHandler(this.INVOKERS["CHANGE"], index);
+    console.log(e, index);
   };
   // Delete from the DB
-  private handleDisplayOnMap = async (ticketId: string) => {
-    console.log(ticketId)
+  private handleDisplayOnMap = async (ticketId: string, index:number) => {
+    console.log(ticketId, index)
     let ticketsShowedOnMap: showOnMap = { ...this.props.ticketsShowedOnMap };
     ticketsShowedOnMap[ticketId] = !ticketsShowedOnMap[ticketId]
     this.props.handleTicketsShowedOnMapState(ticketsShowedOnMap);
@@ -262,7 +262,7 @@ class TicketSchedulerTable extends Component<
                 }}
               >
                 <span
-                  onClick={() => this.ACTIONS[action].handler(ticket._id)}
+                  onClick={() => this.ACTIONS[action].handler(ticket._id, index)}
                   className="active p-1"
                 >
                   {action === "displayOnMap"
