@@ -1,9 +1,11 @@
-import React, { Component } from "react";
+import React, { Component} from "react";
 
 import GoogleMapReact from "google-map-react";
-import { DirectionsRenderer  } from "react-google-maps";
+// import { DirectionsRenderer  } from "react-google-maps";
 
 import MapCard from "../commons/MapCard";
+ //import {DirectionsRendererTest} from "./TestDisplayRoute";
+import Test from './test'
 
 import "./Scheduler.css";
 
@@ -31,12 +33,17 @@ interface MapProps {
   }[];
 }
 
+interface GoogleApiLoaded {
+  map: google.maps.Map
+}
+
 type BrainMapState = {
   directions?: any;
 }
 
 class BrainMap extends Component<MapProps> {
   state: BrainMapState;
+  map: google.maps.Map | null;
   initialPosition = {
     center: {
       lat: 19.4978,
@@ -45,10 +52,11 @@ class BrainMap extends Component<MapProps> {
     zoom: 12,
   };
 
-  constructor(props: any){
-    super(props)
+  constructor(props: any) {
+    super(props);
     const DirectionsService = new google.maps.DirectionsService();
     this.state = {};
+    this.map = null;
 
     DirectionsService.route(
       {
@@ -70,7 +78,11 @@ class BrainMap extends Component<MapProps> {
     );
 
     //const directionsRenderer = new google.maps.DirectionsRenderer();
-}
+  }
+
+  handleApiLoaded(mapInstance: google.maps.Map) {
+    this.map = mapInstance;
+  }
 
   render() {
     return (
@@ -80,6 +92,9 @@ class BrainMap extends Component<MapProps> {
           bootstrapURLKeys={{ key: process.env.REACT_APP_MAPS_API_KEY }}
           defaultCenter={this.initialPosition.center}
           defaultZoom={this.initialPosition.zoom}
+          onGoogleApiLoaded={({ map }: GoogleApiLoaded) =>
+            this.handleApiLoaded(map)
+          }
         >
           {this.props.tickets.map((ticket) => (
             <MapCard
@@ -92,19 +107,33 @@ class BrainMap extends Component<MapProps> {
             <MapCard {...engineer.coor} service={null} key={engineer._id} />
           ))}
 
-          {this.state.directions && (
-            <DirectionsRenderer
-              directions={this.state.directions}
-              options={{
-                polylineOptions: {
-                  strokeOpacity: 0.4,
-                  strokeWeight: 4,
-                },
-                preserveViewport: true,
-                suppressMarkers: true,
+          {
+            <Test
+              map={this.map}
+              origin={{
+                lat: 19.5092414,
+                lng: -99.0836029,
+              }}
+              destination={{
+                lat: 19.5292414,
+                lng: -99.0611029,
               }}
             />
-          )}
+          }
+
+          {/* {this.map && (
+            <DirectionsRendererTest
+              map={this.map}
+              origin={{
+                lat: 19.5092414,
+                lng: -99.0836029,
+              }}
+              destination={{
+                lat: 19.5292414,
+                lng: -99.0611029,
+              }}
+            />
+          )} */}
         </GoogleMapReact>
       </div>
     );
