@@ -4,6 +4,8 @@ import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import Badge from "react-bootstrap/Badge";
 
+//import Test from "./test";
+
 interface Ticket {
   _id: string;
   atm: ATM;
@@ -43,6 +45,7 @@ interface Engineer {
 }
 interface ExtraInfoChangeEngineerProps {
   ticket: Ticket;
+  map: google.maps.Map|null
 }
 
 const COLUMN_NAMES = [
@@ -86,8 +89,8 @@ export class ExtraInfoChangeEngineer extends Component<
         name: "CALVILLO FLORIANO JOSE DE JESUS",
         _id: 1730276,
         coor: {
-          lat: 19.7682414,
-          lng: -99.0436029,
+          lat: 19.5292414,
+          lng: -99.0611029,
         },
         region: "NORTE",
         sub_region: "NOROESTE",
@@ -114,7 +117,7 @@ export class ExtraInfoChangeEngineer extends Component<
     ];
     return engineers;
   };
-  // This will be added in the backend and the distance result will be part of tthe recomendation
+  // This will be added in the backend and the distance result will be part of the recomendation
   getDistance = (eng: number, origin: any, dest: any) => {
     const DistanceMatrixService = new google.maps.DistanceMatrixService();
     DistanceMatrixService.getDistanceMatrix(
@@ -138,6 +141,52 @@ export class ExtraInfoChangeEngineer extends Component<
       }
     );
   };
+
+  draw_route(origin:any, destination:any){
+    const DirectionsService = new google.maps.DirectionsService();
+    DirectionsService.route(
+      {
+        origin: origin,
+        destination: destination,
+        travelMode: window.google.maps.TravelMode.DRIVING,
+        drivingOptions: {
+          departureTime: new Date(),
+          trafficModel: google.maps.TrafficModel.OPTIMISTIC,
+        },
+      },
+      (result, status) => {
+        // console.log("status", status);
+        if (status === window.google.maps.DirectionsStatus.OK) {
+          console.log(result);
+          let leg = result.routes[0].legs[0];
+          const directionsRenderer = new google.maps.DirectionsRenderer({
+            polylineOptions: {
+              strokeColor: this.get_route_color(
+                leg.distance.value,
+                leg.duration_in_traffic.value
+              ),
+              geodesic: true,
+              strokeWeight: 5,
+            },
+          });
+
+          directionsRenderer.setMap(this.props.map);
+          directionsRenderer.setDirections(result);
+        } else {
+          console.error(`error fetching directions ${result}`);
+        }
+      }
+    );
+  }
+
+  get_route_color(distance: number, duration: number) {
+      // convert between meters and seconds to km and hours
+      let hours = duration / 3600;
+      let km = distance / 1000;
+      let traffic_speed = km / hours;
+      let color = (traffic_speed >= 80) ? "#24f70c" : (traffic_speed >= 25 && traffic_speed < 80)? "#f7b50c": "#eb4034";
+      return color
+    }
 
   render() {
     return (
@@ -170,15 +219,11 @@ export class ExtraInfoChangeEngineer extends Component<
                       <span
                         key={engineer._id}
                         onClick={() =>
-                          this.getDistance(
-                            engineer._id,
-                            this.props.ticket.atm.coor,
-                            engineer.coor
-                          )
+                          this.draw_route(engineer.coor, this.props.ticket.atm.coor)
                         }
                       >
                         {this.state[engineer._id].time}
-                      </span>
+                        </span>
                     </td>
                     <td>
                       <span

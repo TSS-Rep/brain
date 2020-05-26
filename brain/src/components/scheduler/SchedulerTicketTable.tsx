@@ -49,6 +49,7 @@ interface TicketSchedulerTableProps {
       [key: string]: boolean;
   }
   handleTicketsShowedOnMapState(ticketsShowedOnMap:showOnMap): void;
+  map:google.maps.Map|null;
 }
 
 interface TicketSchedulerTableState {
@@ -303,6 +304,7 @@ class TicketSchedulerTable extends Component<
             }
             ticket={ticket}
             engineer={engineer}
+            map={this.props.map}
           />
         );
       }

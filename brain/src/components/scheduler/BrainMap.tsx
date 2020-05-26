@@ -5,7 +5,7 @@ import GoogleMapReact from "google-map-react";
 
 import MapCard from "../commons/MapCard";
  //import {DirectionsRendererTest} from "./TestDisplayRoute";
-import Test from './test'
+//import Test from './test'
 
 import "./Scheduler.css";
 
@@ -31,6 +31,7 @@ interface MapProps {
     _id: number;
     coor: { lat: number; lng: number };
   }[];
+  setMap(map:google.maps.Map): void;
 }
 
 interface GoogleApiLoaded {
@@ -82,6 +83,7 @@ class BrainMap extends Component<MapProps> {
 
   handleApiLoaded(mapInstance: google.maps.Map) {
     this.map = mapInstance;
+    this.props.setMap(mapInstance)
   }
 
   render() {
@@ -108,17 +110,17 @@ class BrainMap extends Component<MapProps> {
           ))}
 
           {
-            <Test
-              map={this.map}
-              origin={{
-                lat: 19.5092414,
-                lng: -99.0836029,
-              }}
-              destination={{
-                lat: 19.5292414,
-                lng: -99.0611029,
-              }}
-            />
+            // <Test
+            //   map={this.map}
+            //   origin={{
+            //     lat: 19.5092414,
+            //     lng: -99.0836029,
+            //   }}
+            //   destination={{
+            //     lat: 19.5292414,
+            //     lng: -99.0611029,
+            //   }}
+            // />
           }
 
           {/* {this.map && (

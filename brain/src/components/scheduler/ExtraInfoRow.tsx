@@ -51,6 +51,8 @@ interface ExtraInfoRowProps {
     ticket: Ticket;
 
     engineer: Engineer;
+
+    map: google.maps.Map|null;
 }
 
 
@@ -71,7 +73,7 @@ export default class ExtraInfoRow extends Component<ExtraInfoRowProps> {
                 <ExtraInfoEngineer engineer={this.props.engineer} />
               )}
               {this.props.show && this.props.showChangeEngineer && (
-                <ExtraInfoChangeEngineer ticket={this.props.ticket} />
+                <ExtraInfoChangeEngineer ticket={this.props.ticket} map={this.props.map} />
               )}
             </td>
           </tr>
