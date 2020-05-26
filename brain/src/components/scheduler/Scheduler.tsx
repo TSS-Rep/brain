@@ -13,6 +13,7 @@ interface SchedulerState {
   ticketsShowedOnMap: {
     [key: string]: boolean;
   };
+  map : google.maps.Map | null;
 }
 
 interface Ticket {
@@ -140,12 +141,17 @@ class Scheduler extends Component {
       tickets: this.tickets,
       // Show all the tickets by default
       ticketsShowedOnMap: this.ticketsShowedOnMap,
+      map: null
     };
   }
 
   handleTicketsShowedOnMapState(ticketsShowedOnMap: showOnMap) {
     console.log(ticketsShowedOnMap);
     this.setState({ ticketsShowedOnMap });
+  }
+
+  setMap(map: google.maps.Map){
+    this.setState({map});
   }
 
   render() {
@@ -164,6 +170,7 @@ class Scheduler extends Component {
                   handleTicketsShowedOnMapState={this.handleTicketsShowedOnMapState.bind(
                     this
                   )}
+                  map={this.state.map}
                 />
               </Card.Body>
             </Card>
@@ -179,6 +186,7 @@ class Scheduler extends Component {
                   handleTicketsShowedOnMapState={this.handleTicketsShowedOnMapState.bind(
                     this
                   )}
+                  map={this.state.map}
                 />
               </Card.Body>
             </Card>
@@ -190,6 +198,7 @@ class Scheduler extends Component {
                 return this.state.ticketsShowedOnMap[ticket._id];
               })}
               engineers={this.engineers}
+              setMap={this.setMap.bind(this)}
             />
           </Col>
         </Row>
