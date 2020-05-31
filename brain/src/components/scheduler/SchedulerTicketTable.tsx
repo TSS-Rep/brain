@@ -6,43 +6,13 @@ import { IconContext } from "react-icons";
 import { FaCheckCircle, FaExchangeAlt } from "react-icons/fa";
 import { MdCancel, MdLocationOn, MdLocationOff } from "react-icons/md";
 
-import ExtraInfoRow from "./ExtraInfoRow";
+import ExtraInfoRow from "components/scheduler/ExtraInfoRow";
+import Ticket from "interfaces/Ticket";
+import Engineer from "interfaces/Engineer";
 
 interface TicketSchedulerTableProps {
-  tickets: {
-    _id: string;
-    atm: {
-      _id: string;
-      address: string;
-      suburb: string;
-      postal_code: number;
-      city: string;
-      state: string;
-      brand: string;
-      model: string;
-      service: string;
-      region: string,
-      service_time: string,
-      recurrent: boolean;
-      coor: {
-        lat: number;
-        lng: number;
-      };
-    };
-    start_date: string;
-    engineer?: number;
-  }[];
-  engineers: {
-    name: string;
-    _id: number;
-    coor: { lat: number; lng: number };
-    region: string;
-    sub_region: string;
-    state: string;
-    city: string;
-    platform: string;
-    manager: string;
-  }[];
+  tickets: Ticket[];
+  engineers: Engineer[];
   actions: string[];
   handleShowMore?: any;
   ticketsShowedOnMap: {

@@ -4,9 +4,10 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 
-import BrainMap from "./BrainMap";
-import TicketSchedulerTable from "./SchedulerTicketTable";
-import "./Scheduler.css";
+import BrainMap from "components/scheduler/BrainMap";
+import TicketSchedulerTable from "components/scheduler/SchedulerTicketTable";
+import Ticket from "interfaces/Ticket";
+import "components/scheduler/Scheduler.css";
 
 interface SchedulerState {
   tickets: Ticket[] | [];
@@ -15,31 +16,6 @@ interface SchedulerState {
   };
   map : google.maps.Map | null;
 }
-
-interface Ticket {
-  _id: string;
-  atm: {
-    _id: string;
-    address: string;
-    suburb: string;
-    postal_code: number;
-    city: string;
-    state: string;
-    brand: string;
-    model: string;
-    service: string;
-    region: string;
-    service_time: string;
-    recurrent: boolean;
-    coor: {
-      lat: number;
-      lng: number;
-    };
-  };
-  start_date: string;
-  engineer?: number;
-}
-
 type showOnMap = {
   [key: string]: boolean;
 };

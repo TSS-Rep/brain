@@ -1,45 +1,11 @@
 import React, { Component } from 'react'
 
-import { ExtraInfoATM } from "./ExtraInfoATM";
-import { ExtraInfoEngineer } from "./ExtraInfoEngineer";
-import { ExtraInfoChangeEngineer } from "./ExtraInfoChangeEngineer";
+import { ExtraInfoATM } from "components/scheduler/ExtraInfoATM";
+import { ExtraInfoEngineer } from "components/scheduler/ExtraInfoEngineer";
+import { ExtraInfoChangeEngineer } from "components/scheduler/ExtraInfoChangeEngineer";
+import Ticket from 'interfaces/Ticket';
+import Engineer from 'interfaces/Engineer';
 
-
-interface Ticket {
-    _id: string;
-    atm: {
-      _id: string;
-      address: string;
-      suburb: string;
-      postal_code: number;
-      city: string;
-      state: string;
-      brand: string;
-      model: string;
-      service: string;
-      region: string,
-      service_time: string,
-      recurrent: boolean;
-      coor: {
-        lat: number;
-        lng: number;
-      };
-    };
-    start_date: string;
-    engineer?: number;
-  }
-
-interface Engineer {
-  name: string;
-  _id: number;
-  coor: { lat: number; lng: number };
-  region: string;
-  sub_region: string;
-  state: string;
-  city: string;
-  platform: string;
-  manager: string;
-}
 
 interface ExtraInfoRowProps {
     colSpan: number;

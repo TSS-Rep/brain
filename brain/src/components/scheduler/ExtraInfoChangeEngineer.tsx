@@ -3,46 +3,11 @@ import React, { Component } from "react";
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import Badge from "react-bootstrap/Badge";
+import Ticket from "interfaces/Ticket";
+import Engineer from "interfaces/Engineer";
 
 //import Test from "./test";
 
-interface Ticket {
-  _id: string;
-  atm: ATM;
-  start_date: string;
-  engineer?: number;
-}
-
-interface ATM {
-  _id: string;
-  address: string;
-  suburb: string;
-  postal_code: number;
-  city: string;
-  state: string;
-  brand: string;
-  model: string;
-  service: string;
-  region: string;
-  service_time: string;
-  recurrent: boolean;
-  coor: {
-    lat: number;
-    lng: number;
-  };
-}
-
-interface Engineer {
-  name: string;
-  _id: number;
-  coor: { lat: number; lng: number };
-  region: string;
-  sub_region: string;
-  state: string;
-  city: string;
-  platform: string;
-  manager: string;
-}
 interface ExtraInfoChangeEngineerProps {
   ticket: Ticket;
   map: google.maps.Map|null
