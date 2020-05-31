@@ -1,6 +1,8 @@
 {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "javascript.format.semicolons": "insert",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "javascript.preferences.importModuleSpecifier": "non-relative",
     "typescript.disableAutomaticTypeAcquisition": true,
     "typescript.format.insertSpaceAfterConstructor": true,
     "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
@@ -13,5 +15,6 @@
     "typescript.locale": "es",
     "typescript.preferences.importModuleSpecifier": "non-relative",
     "typescript.referencesCodeLens.enabled": true,
-    "typescript.referencesCodeLens.showOnAllFunctions": true
+    "typescript.referencesCodeLens.showOnAllFunctions": true,
+    "typescript.updateImportsOnFileMove.enabled": "always",
 }

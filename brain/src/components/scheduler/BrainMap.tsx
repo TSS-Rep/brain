@@ -3,34 +3,17 @@ import React, { Component} from "react";
 import GoogleMapReact from "google-map-react";
 // import { DirectionsRenderer  } from "react-google-maps";
 
-import MapCard from "../commons/MapCard";
+import MapCard from "components/commons/MapCard";
  //import {DirectionsRendererTest} from "./TestDisplayRoute";
 //import Test from './test'
 
-import "./Scheduler.css";
+import "components/scheduler/Scheduler.css";
+import Ticket from "interfaces/Ticket";
+import Engineer from "interfaces/Engineer";
 
 interface MapProps {
-  tickets: {
-    _id: string;
-    atm: {
-      _id: string;
-      brand: string;
-      model: string;
-      service: string;
-      coor: {
-        lat: number;
-        lng: number;
-      };
-      recurrent: boolean;
-    };
-    start_date: string;
-    engineer?: number;
-  }[];
-  engineers: {
-    name: string;
-    _id: number;
-    coor: { lat: number; lng: number };
-  }[];
+  tickets: Ticket[];
+  engineers: Engineer[];
   setMap(map:google.maps.Map): void;
 }
 
