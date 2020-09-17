@@ -5,6 +5,9 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import Scheduler from "./components/scheduler/Scheduler";
+import { UnassignedTicketsProvider } from "contexts/UnassignedTickets"
+import { EngineersProvider } from "contexts/Engineers";
+import { FollowUpTicketsProvider } from "contexts/FollowUpTickets";
 
 class App extends Component {
   render() {
@@ -14,8 +17,8 @@ class App extends Component {
           <BrainNav />
           <Switch>
             <Route path="/signin" component={SignIn} />
-            <Route path="/signup" component={SignUp} />
-            <Route path="/scheduler" component={Scheduler} />
+            <Route path="/signup" component={ SignUp } />
+            <Route path="/scheduler" component={ Scheduler } />
           </Switch>
           <BrainFooter />
         </div>
@@ -24,4 +27,12 @@ class App extends Component {
   }
 }
 
-export default App;
+export default () => (
+  <UnassignedTicketsProvider>
+    <EngineersProvider>
+      <FollowUpTicketsProvider>
+        <App/>
+      </FollowUpTicketsProvider>
+    </EngineersProvider>
+  </UnassignedTicketsProvider>
+);
