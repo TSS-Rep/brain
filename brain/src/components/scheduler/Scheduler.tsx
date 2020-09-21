@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 
 import BrainMap from "components/scheduler/BrainMap";
+import TicketSchedulerTable2 from "components/scheduler/TicketSchedulerTable2";
 import TicketSchedulerTable from "components/scheduler/SchedulerTicketTable";
 import Ticket from "interfaces/Ticket";
 import "components/scheduler/Scheduler.css";
@@ -27,55 +28,56 @@ class Scheduler extends Component {
   state: SchedulerState;
   constructor(props: any) {
     super(props);
-    this.tickets = [
-      {
-        _id: "P267349",
-        atm: {
-          _id: "X99314",
-          address: "AV. VIA MORELOS NO. 242",
-          suburb: "SANTA MARIA TULPETLAC",
-          postal_code: 55400,
-          city: "ECATEPEC DE MORELOS",
-          state: "ESTADO DE MEXICO",
-          service: "SUC",
-          brand: "DIEBOLD",
-          model: "NEXTGEN 3700",
-          region: "METRO NORTE",
-          service_time: "L-V 09:00-16:00",
-          recurrent: false,
-          coor: {
-            lat: 19.5682414,
-            lng: -99.0436029,
-          },
-        },
-        start_date: "25/04/2020 11:42",
-        engineer: 1730276,
-      },
+    this.tickets = []
+    // this.tickets = [
+    //   {
+    //     _id: "P267349",
+    //     atm: {
+    //       _id: "X99314",
+    //       address: "AV. VIA MORELOS NO. 242",
+    //       suburb: "SANTA MARIA TULPETLAC",
+    //       postal_code: 55400,
+    //       city: "ECATEPEC DE MORELOS",
+    //       state: "ESTADO DE MEXICO",
+    //       service: "SUC",
+    //       brand: "DIEBOLD",
+    //       model: "NEXTGEN 3700",
+    //       region: "METRO NORTE",
+    //       service_time: "L-V 09:00-16:00",
+    //       recurrent: false,
+    //       coor: {
+    //         lat: 19.5682414,
+    //         lng: -99.0436029,
+    //       },
+    //     },
+    //     start_date: "25/04/2020 11:42",
+    //     engineer: 1730276,
+    //   },
 
-      {
-        _id: "P265372",
-        atm: {
-          _id: "X99314",
-          address: "AV. VIA MORELOS NO. 242",
-          suburb: "SANTA MARIA TULPETLAC",
-          postal_code: 55400,
-          city: "ECATEPEC DE MORELOS",
-          state: "ESTADO DE MEXICO",
-          service: "SUC",
-          brand: "DIEBOLD",
-          model: "NEXTGEN 3700",
-          region: "METRO NORTE",
-          service_time: "L-V 09:00-16:00",
-          recurrent: true,
-          coor: {
-            lat: 19.5092414,
-            lng: -99.0836029,
-          },
-        },
-        start_date: "25/04/2020 11:42",
-        engineer: 1376310,
-      },
-    ];
+    //   {
+    //     _id: "P265372",
+    //     atm: {
+    //       _id: "X99314",
+    //       address: "AV. VIA MORELOS NO. 242",
+    //       suburb: "SANTA MARIA TULPETLAC",
+    //       postal_code: 55400,
+    //       city: "ECATEPEC DE MORELOS",
+    //       state: "ESTADO DE MEXICO",
+    //       service: "SUC",
+    //       brand: "DIEBOLD",
+    //       model: "NEXTGEN 3700",
+    //       region: "METRO NORTE",
+    //       service_time: "L-V 09:00-16:00",
+    //       recurrent: true,
+    //       coor: {
+    //         lat: 19.5092414,
+    //         lng: -99.0836029,
+    //       },
+    //     },
+    //     start_date: "25/04/2020 11:42",
+    //     engineer: 1376310,
+    //   },
+    // ];
     this.engineers = [
       {
         name: "CALVILLO FLORIANO JOSE DE JESUS",
@@ -164,6 +166,13 @@ class Scheduler extends Component {
                   )}
                   map={this.state.map}
                 />
+              </Card.Body>
+            </Card>
+
+            <Card className=" mt-2">
+              <Card.Header>Tickets No Asignados</Card.Header>
+              <Card.Body>
+                <TicketSchedulerTable2/>
               </Card.Body>
             </Card>
           </Col>

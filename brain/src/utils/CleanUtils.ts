@@ -1,4 +1,4 @@
-export function formattedDate(d = new Date()) {
+export function formattedDate(d: any) {
 	d = typeof d === 'string' ? new Date(d) : d;
 
 	let month = String(d.getMonth() + 1);
