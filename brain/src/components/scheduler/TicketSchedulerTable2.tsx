@@ -4,10 +4,11 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { useUnassignedTickets } from 'contexts/UnassignedTickets';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { formattedDate } from 'utils/CleanUtils';
-import { recurrentATM } from 'utils/TableFormatters';
+import { callActionsHandler, recurrentATM } from 'utils/TableFormatters';
 import { ExtraInfoATM } from 'components/scheduler/ExtraInfoATM';
 // import { ExtraInfoEngineer } from 'components/scheduler/ExtraInfoEngineer';
 import { ExtraInfoTicket } from 'components/scheduler/ExtraInfoTicket';
+import { SetOfActions } from 'components/scheduler/actions/ActionHandler';
 
 
 
@@ -133,7 +134,9 @@ export default function TicketSchedulerTable2() {
         {
             dataField: 'actions',
             text: 'ACTIONS',
-            headerAlign: 'center'
+            headerAlign: 'center',
+            formatter: callActionsHandler,
+            formatExtraData: SetOfActions.UNASSIGNED_TICKET,
         }
     ];
     
@@ -147,11 +150,7 @@ export default function TicketSchedulerTable2() {
                 </div>
             )
             
-        },
-        onExpand: (_row: any, isExpand: any, _rowIndex: any, e: any) => {
-            console.log("asdsad", isExpand)
-            if(isExpand) e.stopPropagation()
-          }
+        }
     };
 
 	return (
