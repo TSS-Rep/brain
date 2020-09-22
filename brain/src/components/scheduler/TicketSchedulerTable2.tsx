@@ -6,7 +6,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import { formattedDate } from 'utils/CleanUtils';
 import { recurrentATM } from 'utils/TableFormatters';
 import { ExtraInfoATM } from 'components/scheduler/ExtraInfoATM';
-import { ExtraInfoEngineer } from 'components/scheduler/ExtraInfoEngineer';
+// import { ExtraInfoEngineer } from 'components/scheduler/ExtraInfoEngineer';
 import { ExtraInfoTicket } from 'components/scheduler/ExtraInfoTicket';
 
 
@@ -24,7 +24,6 @@ type displayControl = {
 
 interface rows {
     displayData: displayControl,
-    expanded: number[],
     
 }
 
@@ -46,35 +45,36 @@ enum ExtraDataLabel {
     TICKET = "TICKET",
 }
 
-function handleDisplayExtraData(target: ExtraDataLabel, rows: rows, setRow: any, isRowExpanded: boolean, rowIndex: number) {
-    // If the row is expanded and atm extra data is shown already then toggle the data
-    if (!isRowExpanded) {
-        rows.expanded.push(rowIndex);
-        rows.displayData[rowIndex]= {
-            showExtraInfoATM: false,
-            showExtraInfoEngineer: false,
-            showChangeEngineer: false,
-            showExtraInfoTicket: false,
-        }
+function handleDisplayExtraData(target: ExtraDataLabel, rows: rows, setRow: any, rowIndex: number) {
+    // Always reset (only 1 is displayed)
+    rows.displayData[rowIndex]= {
+        showExtraInfoATM: false,
+        showExtraInfoEngineer: false,
+        showChangeEngineer: false,
+        showExtraInfoTicket: false,
     }
+
     switch (target) {
         case ExtraDataLabel.ATM:
             rows.displayData[rowIndex].showExtraInfoATM = !rows.displayData[rowIndex].showExtraInfoATM;
+            rows.displayData[rowIndex].showExtraInfoEngineer = false
+            rows.displayData[rowIndex].showExtraInfoTicket = false
             break;
         case ExtraDataLabel.ENGINEER:
-            rows.displayData[rowIndex].showChangeEngineer = !rows.displayData[rowIndex].showExtraInfoEngineer;
+            rows.displayData[rowIndex].showExtraInfoEngineer = !rows.displayData[rowIndex].showExtraInfoEngineer;
+            rows.displayData[rowIndex].showExtraInfoTicket = false
+            rows.displayData[rowIndex].showExtraInfoATM = false
             break;
         case ExtraDataLabel.TICKET:
             rows.displayData[rowIndex].showExtraInfoTicket = !rows.displayData[rowIndex].showExtraInfoTicket;
+            rows.displayData[rowIndex].showExtraInfoATM = false
+            rows.displayData[rowIndex].showExtraInfoEngineer = false
             break;
     
         default:
             break;
     }
-    let is_anything_displayed = Object.values(rows.displayData[rowIndex]).some((val: boolean) => val === true)
-    if (!is_anything_displayed) {
-        rows.expanded.filter((x: number) => x !== rowIndex)
-    }
+
     setRow(rows);
 }
 
@@ -97,7 +97,7 @@ export default function TicketSchedulerTable2() {
 		[ unassignedTickets ]
     );
 
-    const [ rows, setRow ] = useState<rows>({displayData: {}, expanded: []});
+    const [ rows, setRow ] = useState<rows>({displayData: {}});
     const columns = [
         {
             dataField: '_id',
@@ -105,8 +105,7 @@ export default function TicketSchedulerTable2() {
             headerAlign: 'center',
             events: {
                 onClick: (_e: any, _column: any, _columnIndex: number, _row: any, rowIndex: number) => {
-                const isRowExpanded = rows.expanded.includes( rowIndex );
-                handleDisplayExtraData(ExtraDataLabel.TICKET, rows, setRow, isRowExpanded, rowIndex);
+                    handleDisplayExtraData(ExtraDataLabel.TICKET, rows, setRow, rowIndex);
                 }
             }
         },
@@ -122,8 +121,7 @@ export default function TicketSchedulerTable2() {
             formatter: recurrentATM,
             events: {
                 onClick: (_e: any, _column: any, _columnIndex: number, _row: any, rowIndex: number) => {
-                const isRowExpanded = rows.expanded.includes( rowIndex );
-                handleDisplayExtraData(ExtraDataLabel.ATM, rows, setRow, isRowExpanded, rowIndex);
+                    handleDisplayExtraData(ExtraDataLabel.ATM, rows, setRow, rowIndex);
                 }
             }
         },
@@ -141,26 +139,19 @@ export default function TicketSchedulerTable2() {
     
     const expandRow = {
         renderer: (row: any, rowIndex: any) => {
-                if (rows.displayData[rowIndex].showExtraInfoATM) {
-                    return (
-                        <ExtraInfoATM atm={row.atm_details} />
-                    )
-                  } 
-                else if (rows.displayData[rowIndex].showExtraInfoEngineer){
-                    return (
-                        <ExtraInfoEngineer engineer={row.atm_details} />
-                    )
-                }
-                else if (rows.displayData[rowIndex].showExtraInfoTicket){
-                    return (
-                        <ExtraInfoTicket ticket={row} />
-                    )
-                }
-                else {
-                    return <div>Cargando...</div>
-                  }
+            return (
+                <div>
+                    {rows.displayData[rowIndex].showExtraInfoATM && <ExtraInfoATM atm={row.atm_details} />}
+                    {/* rows.displayData[rowIndex].showExtraInfoEngineer && <ExtraInfoEngineer engineer={row.atm_details} /> */}
+                    {rows.displayData[rowIndex].showExtraInfoTicket && <ExtraInfoTicket ticket={row} />}
+                </div>
+            )
+            
         },
-        expanded: rows.expanded,
+        onExpand: (_row: any, isExpand: any, _rowIndex: any, e: any) => {
+            console.log("asdsad", isExpand)
+            if(isExpand) e.stopPropagation()
+          }
     };
 
 	return (
